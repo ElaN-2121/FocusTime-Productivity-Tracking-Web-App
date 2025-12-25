@@ -1,0 +1,312 @@
+:root {
+  /* Color Palette */
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --bg-body: #f3f4f6;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+
+  /* Spacing & Radius */
+  --radius-md: 12px;
+  --radius-lg: 25px;
+  --radius-sm: 4px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Layout Container */
+.dashboard-layout {
+  padding: 40px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  box-sizing: border-box;
+  width: 100%; /* Ensures it fills the screen */
+}
+
+/* Header */
+.todo-header {
+  background: white;
+  border-radius: 20px;
+  padding: 15px 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Kanban Board Container */
+.task-board-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 10px;
+
+  /* Ensure it doesn't overflow horizontally on the page wrapper */
+  max-width: 100%;
+  width: 100%;
+  background-color: #e2eeff;
+  border-radius: var(--radius-md);
+  
+  flex-wrap: wrap;
+}
+
+/* Hide scrollbar for cleaner look (optional) */
+.task-board-container::-webkit-scrollbar {
+  height: 8px;
+}
+.task-board-container::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+
+.kanban-column {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  width: 300px;
+  min-width: 300px; /* Prevents columns from squishing too small */
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.kanban-column h3 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+/* Task Cards */
+.task-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.task-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-main);
+  margin: 0;
+}
+
+/* Badge Logic */
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.badge.assignment {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.badge.exam {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.badge.task {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.task-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 10px;
+}
+
+/* Bottom Grid (Assignments & Exams) */
+.bottom-sections-grid {
+  display: grid;
+  /* Automatically wraps, but forces 350px minimum width per card */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.side-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.side-list {
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+  /* Add padding to ensure modal doesn't touch screen edges */
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  width: 450px;
+  max-width: 90%; /* Prevents overflow on small screens */
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* =========================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================= */
+
+/* Tablets and Small Laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .bottom-sections-grid {
+    /* Allow cards to shrink slightly more on tablets */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* Mobile Devices (max-width: 768px) */
+@media (max-width: 768px) {
+  /* 1. Reduce Global Padding */
+  .dashboard-layout {
+    padding: 20px;
+  }
+
+  /* 2. Header Adjustments */
+  .todo-header {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+  }
+  .add-column-controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    width: fit-content;
+  }
+
+  .form-input {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    outline: none;
+  }
+
+  /* 3. Kanban Board for Touch/Scroll */
+  .task-board-container {
+    margin-top: 16px;
+    gap: 12px;
+  }
+
+  .kanban-column {
+    /* Take up more width on mobile, but keep scrolling */
+    width: 85vw;
+    min-width: 280px;
+    padding: 12px;
+  }
+
+  /* 4. Bottom Grid: Force Vertical Stack */
+  .bottom-sections-grid {
+    margin-top: 20px;
+    gap: 16px;
+    grid-template-columns: 1fr; /* Single column stack */
+  }
+
+  .side-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  /* 5. Modal Adjustments */
+  .modal-overlay {
+    padding: 15px;
+    align-items: flex-end; /* Slide up from bottom feel on very small screens? Or keep centered. Let's keep centered for simplicity */
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+    max-height: 90vh;
+    overflow-y: auto; /* Scroll inside modal if content is long */
+  }
+}
+
+/* Extra Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .task-title {
+    font-size: 0.95rem;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+  }
+
+  .modal-actions {
+    flex-direction: column; /* Stack buttons vertically on tiny screens */
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}

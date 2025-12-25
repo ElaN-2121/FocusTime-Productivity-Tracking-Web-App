@@ -1,0 +1,56 @@
+
+:root {
+  /* Color Palette */
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --bg-body: #f3f4f6;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+
+  /* Spacing & Radius */
+  --radius-md: 8px;
+  --radius-sm: 15px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.btn {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+/* Specific Variants */
+.btn-primary {
+  width:fit-content;
+  background-color: var(--primary);
+  color: white;
+  align-self: center ;
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-edit {
+  background-color: transparent;
+  color: var(--primary);
+  padding: 4px 8px;
+}
+.btn-edit:hover {
+  background-color: #eff6ff; /* light blue */
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: var(--danger);
+  padding: 4px 8px;
+}
+.btn-delete:hover {
+  background-color: #fef2f2; /* light red */
+}
