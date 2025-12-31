@@ -38,37 +38,39 @@ export default function Pomodoro() {
   }
 
   return (
-    <div className="pomodoro-container">
-      <h1>{mode === "focus" ? "Focus Time" : "Break Time"}</h1>
+    <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden', boxSizing: 'border-box' }}>
+      <div className="pomodoro-container" style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
+        <h1>{mode === "focus" ? "Focus Time" : "Break Time"}</h1>
 
-      <FlipClock time={timeLeft} />
+        <FlipClock time={timeLeft} />
 
-      <Controls
-        isRunning={isRunning}
-        onStart={() => setIsRunning(true)}
-        onPause={() => setIsRunning(false)}
-        onReset={() => switchMode(mode)}
-      />
+        <Controls
+          isRunning={isRunning}
+          onStart={() => setIsRunning(true)}
+          onPause={() => setIsRunning(false)}
+          onReset={() => switchMode(mode)}
+        />
 
-      <div className="mode-buttons">
-        <button
-          className={mode === "focus" ? "selected" : undefined}
-          onClick={() => switchMode("focus")}
-        >
-          Focus
-        </button>
-        <button
-          className={mode === "short" ? "selected" : undefined}
-          onClick={() => switchMode("short")}
-        >
-          Short Break
-        </button>
-        <button
-          className={mode === "long" ? "selected" : undefined}
-          onClick={() => switchMode("long")}
-        >
-          Long Break
-        </button>
+        <div className="mode-buttons">
+          <button
+            className={mode === "focus" ? "selected" : undefined}
+            onClick={() => switchMode("focus")}
+          >
+            Focus
+          </button>
+          <button
+            className={mode === "short" ? "selected" : undefined}
+            onClick={() => switchMode("short")}
+          >
+            Short Break
+          </button>
+          <button
+            className={mode === "long" ? "selected" : undefined}
+            onClick={() => switchMode("long")}
+          >
+            Long Break
+          </button>
+        </div>
       </div>
     </div>
   );

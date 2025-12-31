@@ -1,0 +1,28 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.label {
+  font-size: 14px;
+  color: #02203b;
+  font-weight: 500;
+}
+.input {
+  border-radius: 20px;
+  border: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  outline: none;
+  color: #02203b;
+  background: rgba(255, 255, 255, 0.9);
+  transition: background 0.2s;
+  font-family: inherit;
+}
+.input:focus {
+  background: rgba(255, 255, 255, 0.95);
+}
+.input::placeholder {
+  color: rgba(2, 32, 59, 0.45);
+}
+

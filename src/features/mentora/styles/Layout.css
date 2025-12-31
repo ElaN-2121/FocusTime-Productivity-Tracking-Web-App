@@ -1,0 +1,86 @@
+/* Sidebar moved to Sidebar.css for exact design fidelity */
+
+/* TopBar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #56b4ff;
+  border-radius: 16px;
+  padding: 12px 26px;
+  color: #02203b;
+  font-weight: 600;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.topbar-title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bell {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 20%, #fed7aa, #9f1239);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.user-texts {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #02203b;
+}
+
+.user-energy {
+  font-size: 12px;
+  opacity: 0.75;
+  color: #02203b;
+}
+
+/* =========================================
+   RESPONSIVE (Mobile & Tablet)
+   ========================================= */
+
+/* Tablet & Smaller Desktop: Stack Profile/Content but keep Sidebar if space allows */
+/* Breakpoint chosen where 260px sidebar + content becomes too tight */
+@media (max-width: 1024px) {
+  /* We might keep sidebar full width here, but content stacks */
+  /* No specific changes to sidebar yet, handled in Profiles.css */
+}
+
+/* Mobile: Sidebar becomes Icon-Only to save space */
+@media (max-width: 768px) {
+  /* TopBar Adjustments */
+  .topbar {
+    padding: 15px 20px;
+  }
+
+  .topbar-title {
+    font-size: 20px;
+  }
+}

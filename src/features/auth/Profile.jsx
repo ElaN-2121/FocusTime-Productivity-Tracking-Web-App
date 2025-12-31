@@ -1,12 +1,11 @@
-
-
-
 import React from 'react';
 import '../../styles/pages.css';
 import '../../styles/forms.css';
 import '../../styles/buttons.css';
+import { useAppContext } from '../mentora/context/AppContext';
 
-const Profile = ({ streak, setStreak }) => {
+const Profile = () => {
+  const { streak, setStreak } = useAppContext();
   
   const handleSaveChanges = (e) => {
     e.preventDefault();

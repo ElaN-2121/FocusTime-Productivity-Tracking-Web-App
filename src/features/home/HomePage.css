@@ -1,0 +1,428 @@
+/* Scoped home styles under .external-home to avoid global overrides */
+.external-home .container { 
+  display: block; 
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.external-home .main {
+  padding: 20px 40px;
+  background: #ffffff;
+  border-radius: 18px;
+}
+
+.external-home .hero { 
+  display: flex; 
+  justify-content: space-between; 
+  margin-top: 20px; 
+  margin-bottom: 40px;
+}
+
+.external-home .hero-text h1 { 
+  font-size: 36px; 
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+.external-home .hero-text p {
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.external-home .actions { 
+  margin-top: 20px; 
+  display: flex; 
+  gap: 15px; 
+}
+
+.external-home .actions button { 
+  padding: 12px 24px; 
+  border-radius: 25px; 
+  border: none; 
+  cursor: pointer; 
+  background: #eee;
+  color: #333;
+  transition: 0.3s;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.external-home .actions button.primary { 
+  background: #76C823; 
+  color: #fbfdff;
+  box-shadow: 0 4px 10px rgba(118, 200, 35, 0.3);
+}
+
+/* Make the "View Progress" button gray in light mode (second button) */
+.external-home .actions button:nth-child(2) {
+  background: #a3a6a8;
+  color: #000;
+}
+
+.external-home .image-box { 
+  width: 300px; 
+  height: 240px; 
+  background: #ededed; 
+  color: #66aef8;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 60px; 
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.external-home .cards { 
+  display: flex; 
+  gap: 30px; 
+  margin-top: 40px; 
+}
+.external-home .card { 
+  background: #cfeea8; /* darker lime box background (light mode) */
+  color: #000;
+  padding: 25px; 
+  border-radius: 12px; 
+  width: 300px; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.external-home .card:last-child {
+  background: #cfeea8; /* same darker lime for the second card */
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.external-home .line { 
+  height: 40px; 
+  background: #ffffff; 
+  border-radius: 10px; 
+  margin-top: 15px; 
+  opacity: 0.8;
+}
+
+.external-home .card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+  .external-home .main {
+    padding: 16px;
+  }
+  .external-home .hero { flex-direction: column; gap: 20px; }
+  .external-home .image-box { width: 220px; height: 180px; }
+}
+
+/* Dark mode overrides for external home (scoped) */
+body.theme-dark .external-home .main {
+  background: var(--card-bg, #071a2a) !important;
+  color: var(--text-dark, #e6eef8) !important;
+}
+
+body.theme-dark .external-home .hero-text h1,
+body.theme-dark .external-home .hero-text p,
+body.theme-dark .external-home .card h3,
+body.theme-dark .external-home .actions button {
+  color: var(--text-dark, #f6f6f6) !important;
+}
+
+body.theme-dark .external-home .card {
+  background: var(--card-bg, #071a2a) !important;
+  color: var(--text-dark, #e6eef8) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6) !important;
+}
+
+/* Make the inner fields (.line) the light lime color */
+.external-home .line { 
+  height: 40px; 
+  background: #e6f9d6; /* light lime */
+  border-radius: 10px; 
+  margin-top: 15px; 
+  opacity: 0.95;
+}
+
+body.theme-dark .external-home .line {
+  background: #e6f9d6 !important; /* same light lime in dark mode */
+  opacity: 0.95 !important;
+}
+
+body.theme-dark .external-home .line {
+  background: rgba(255,255,255,0.04) !important;
+}
+
+body.theme-dark .external-home .actions button.primary {
+  background: #448f1a !important;
+  color: #fff !important;
+}
+
+/* Keep the "View Progress" button visually black in dark mode */
+body.theme-dark .external-home .actions button:nth-child(2) {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+:root {
+  /* Focus Time Palette */
+  --color-focus-blue: #4FA3F0; /* Sidebar & Topbar */
+  --color-focus-green: #76C823; /* Primary Buttons */
+  --color-white: #FFFFFF;
+  --color-off-white: #F8F9FA;
+  --color-light-blue: #E1F0FA; /* Notification Card */
+  --color-text-dark: #333333;
+  --color-text-light: #FFFFFF;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Semantic mappings */
+  --bg-main: var(--color-off-white);
+  --bg-sidebar: var(--color-focus-blue);
+  --bg-topbar: var(--color-focus-blue);
+  --bg-card: var(--color-white);
+  --bg-card-accent: var(--color-light-blue);
+  
+  --text-main: var(--color-text-dark);
+  --text-sidebar: var(--color-text-light);
+  
+  --primary: var(--color-focus-green);
+  --secondary: var(--color-focus-blue);
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-sidebar); /* Fill void with sidebar color */
+}
+
+.container { 
+  display: flex; 
+  height: 100vh; 
+  background: var(--bg-main); 
+  width: 100%;
+  border-radius: 30px 0 0 30px; /* Curve the main container to look like the image */
+  overflow: hidden; /* Clip for border radius */
+  margin-left: 0; /* Sidebar is outside or inside? Image shows sidebar separate. Let's keep structure but style sidebar. */
+}
+
+/* Adjusting structure to match image better: Sidebar is full height, Main is curved card */
+body {
+    background: var(--bg-sidebar);
+    display: flex;
+}
+
+.container {
+    background: var(--bg-main);
+    margin: 10px 10px 10px 0;
+    border-radius: 30px;
+    height: calc(100vh - 20px);
+    width: 100%;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* SIDEBAR */ 
+.sidebar { 
+  width: 240px; 
+  background: var(--bg-sidebar); 
+  color: var(--text-sidebar);
+  padding: 20px; 
+  display: flex; 
+  flex-direction: column; 
+  height: 100vh;
+  box-sizing: border-box;
+} 
+ 
+ 
+.logo { 
+  font-weight: bold; 
+  font-size: 24px;
+  margin-bottom: 40px; 
+  color: var(--text-sidebar);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} 
+ 
+ 
+.sidebar nav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 15px; 
+} 
+ 
+ 
+.sidebar button { 
+  background: none; 
+  border: none; 
+  text-align: left; 
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+  padding: 12px 15px; 
+  cursor: pointer; 
+  color: var(--text-sidebar);
+  opacity: 0.8;
+  transition: 0.3s;
+  font-size: 16px;
+} 
+
+.sidebar button:hover {
+  opacity: 1;
+}
+ 
+ 
+.sidebar button.active { 
+  font-weight: bold; 
+  opacity: 1;
+  color: var(--color-focus-blue);
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+} 
+ 
+ 
+.sidebar-footer { 
+  margin-top: auto; 
+  font-size: 14px; 
+  opacity: 0.7;
+} 
+ 
+ 
+/* MAIN */ 
+.main { 
+  flex: 1; 
+  padding: 20px 40px; 
+  overflow-y: auto;
+  background: var(--color-white);
+  border-radius: 30px;
+} 
+ 
+ 
+/* TOP BAR */ 
+.topbar { 
+  background: var(--bg-topbar); 
+  color: var(--text-sidebar);
+  padding: 15px 30px; 
+  border-radius: 15px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(79, 163, 240, 0.3);
+} 
+ 
+ 
+.user { 
+  text-align: right; 
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} 
+ 
+ 
+/* HERO */ 
+.hero { 
+  display: flex; 
+  justify-content: space-between; 
+  margin-top: 20px; 
+  margin-bottom: 40px;
+} 
+ 
+ 
+.hero-text h1 { 
+  font-size: 36px; 
+  color: var(--text-main);
+  margin-bottom: 10px;
+} 
+
+.hero-text p {
+    color: #666;
+    margin-bottom: 25px;
+}
+ 
+ 
+.actions { 
+  margin-top: 20px; 
+  display: flex; 
+  gap: 15px; 
+} 
+ 
+ 
+.actions button { 
+  padding: 12px 24px; 
+  border-radius: 25px; 
+  border: none; 
+  cursor: pointer; 
+  background: #eee;
+  color: #333;
+  transition: 0.3s;
+  font-weight: bold;
+  font-size: 14px;
+} 
+
+.actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+ 
+ 
+.actions button.primary { 
+  background: var(--primary); 
+  color: var(--color-white);
+  box-shadow: 0 4px 10px rgba(118, 200, 35, 0.4);
+} 
+ 
+ 
+/* IMAGE BOX */ 
+.image-box { 
+  width: 300px; 
+  height: 240px; 
+  background: #EAF4FC; 
+  color: var(--secondary);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 60px; 
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; /* Organic shape */
+} 
+ 
+ 
+/* CARDS */ 
+.cards { 
+  display: flex; 
+  gap: 30px; 
+  margin-top: 40px; 
+} 
+ 
+ 
+.card { 
+  background: var(--bg-card-accent); 
+  color: var(--text-main);
+  padding: 25px; 
+  border-radius: 20px; 
+  width: 300px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+} 
+
+.card:last-child {
+    background: var(--color-white);
+    border: 1px solid #eee;
+}
+ 
+.card h3 {
+    margin-top: 0;
+    color: var(--text-main);
+}
+
+.line { 
+  height: 40px; 
+  background: var(--color-white); 
+  border-radius: 10px; 
+  margin-top: 15px; 
+  opacity: 0.8;
+} 
+ 
+ 
+.line.short { 
+  width: 100%; 
+}

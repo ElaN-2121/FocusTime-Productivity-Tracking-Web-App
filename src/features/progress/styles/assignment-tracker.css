@@ -1,0 +1,140 @@
+.assignment-tracker {
+  background: linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%);
+  border-radius: 25px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.tracker-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.tracker-count {
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.8rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.assignments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.assignment-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.assignment-item:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.assignment-item.completed {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.assignment-item.completed .assignment-name {
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.custom-checkbox {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.assignment-item:hover .checkmark {
+  border-color: white;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: white;
+  border-color: white;
+}
+
+.assignment-name {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+  transition: all 0.2s;
+}
+
+@media (max-width: 1024px) {
+  .assignment-tracker {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .assignment-tracker {
+    border-radius: 20px;
+  }
+  .assignment-item {
+    padding: 0.7rem 0.8rem;
+  }
+  .assignment-name {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tracker-title {
+    font-size: 1rem;
+  }
+  .custom-checkbox,
+  .checkmark {
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -1,0 +1,54 @@
+.circular-chart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-canvas {
+  transform: rotate(-90deg);
+}
+
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  line-height: 1;
+}
+
+.chart-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.chart-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .circular-chart {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .circular-chart {
+    transform: scale(0.8);
+  }
+}
