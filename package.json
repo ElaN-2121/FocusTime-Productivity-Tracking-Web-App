@@ -12,6 +12,7 @@
     "vite": "^5.x.x"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   }
