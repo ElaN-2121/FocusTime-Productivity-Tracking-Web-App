@@ -1,59 +1,45 @@
-import React, { useState } from "react";
-import Sidebar from "./components/layout/Sidebar";
-import Navbar from "./components/layout/Navbar";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AppProvider } from "./features/mentora/context/AppContext";
+import Layout from "./features/mentora/components/Layout";
+
+// Features
+import HomePage from "./features/home/HomePage";
+import Pomodoro from "./features/pomodoro/Pomodoro";
 import TaskBoard from "./features/tasks/TaskBoard";
+import Profile from "./features/auth/Profile";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
-import Profile from "./features/auth/Profile";
-import Pomodoro from "./features/pomodoro/Pomodoro";
+import ProgressPage from "./features/progress/components/ProgressPage";
+import MentoraPage from "./features/mentora/pages/MentoraPage";
+
+// Data
+import { progressData } from "./data/mockData";
 
 export default function App() {
-  const [currentView, setCurrentView] = useState("register");
-  // Shared state for the streak
-  const [streak, setStreak] = useState(10);
-
   return (
-    <div
-      className="app-container"
-      style={{
-        display: "flex",
-        backgroundColor: "#f8f9fa",
-        minHeight: "100vh",
-      }}
-    >
-      {currentView !== "login" && currentView !== "register" && (
-        <Sidebar onNavigate={setCurrentView} currentView={currentView} />
-      )}
+    <AppProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-      <div
-        className="main-wrapper"
-        style={{
-          flex: 1,
-          marginLeft:
-            currentView !== "login" && currentView !== "register"
-              ? "260px"
-              : "0",
-        }}
-      >
-        {currentView !== "login" && currentView !== "register" && (
-          <Navbar
-            title={
-              currentView === "profile"
-                ? "PERSONAL INFORMATION"
-                : currentView.toUpperCase()
-            }
-            streak={streak}
-          />
-        )}
-
-        {currentView === "login" && <Login onNavigate={setCurrentView} />}
-        {currentView === "register" && <Register onNavigate={setCurrentView} />}
-        {currentView === "tasks" && <TaskBoard />}
-        {currentView === "profile" && (
-          <Profile streak={streak} setStreak={setStreak} />
-        )}
-        {currentView === "pomodoro" && <Pomodoro />}
-      </div>
-    </div>
+          {/* Protected Routes wrapped in Layout */}
+          <Route element={<Layout />}>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/focus" element={<Pomodoro />} />
+            <Route path="/todo" element={<TaskBoard />} />
+            <Route path="/progress" element={<ProgressPage data={progressData} />} />
+            <Route path="/profile" element={<Profile />} />
+            
+            {/* Placeholders for missing features */}
+            <Route path="/notes" element={<div style={{padding: 20}}>Notes Feature Coming Soon</div>} />
+            <Route path="/youtube" element={<div style={{padding: 20}}>YouTube Feature Coming Soon</div>} />
+            <Route path="/mentora" element={<MentoraPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   );
 }

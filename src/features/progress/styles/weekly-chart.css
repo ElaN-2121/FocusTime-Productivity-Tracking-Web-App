@@ -1,0 +1,147 @@
+.weekly-chart-container {
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  border-radius: 25px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.chart-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.chart-wrapper {
+  display: flex;
+  gap: 1rem;
+  height: 250px;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 0;
+  min-width: 30px;
+  height: 100%;
+}
+
+.y-label {
+  font-size: 0.8rem;
+  color: #1a1a1a;
+  font-weight: 500;
+  line-height: 1;
+  transform: translateY(50%);
+}
+
+.y-label:first-child {
+  transform: translateY(0);
+}
+
+.y-label:last-child {
+  transform: translateY(100%);
+}
+
+.chart-area {
+  flex: 1;
+  position: relative;
+  border-bottom: 1px solid #1a1a1a;
+  border-left: 1px solid #1a1a1a;
+  padding-bottom: 0;
+}
+
+.bars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0 10px;
+  z-index: 2;
+}
+
+.bar-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  position: relative;
+}
+
+.bar {
+  width: 30px;
+  background: #2b57c9;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.bar:hover {
+  background: #1a45b8;
+}
+
+.x-label {
+  position: absolute;
+  bottom: -25px;
+  font-size: 0.8rem;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    height: 220px;
+  }
+  .bar {
+    width: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-wrapper {
+    height: 180px;
+  }
+  .bar {
+    width: 20px;
+  }
+  .x-label {
+    bottom: -20px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-wrapper {
+    height: 160px;
+  }
+  .bar {
+    width: 16px;
+  }
+}
