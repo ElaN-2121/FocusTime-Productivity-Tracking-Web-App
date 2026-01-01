@@ -1,30 +1,31 @@
 import { database } from "../services/firebase/firebaseConfig";
-import { doc, setDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { 
+  doc, 
+  setDoc, 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  serverTimestamp 
+} from "firebase/firestore";
 
-const getTimerRef = (userId) => doc(database, "users", userId, "state", "active");
-
-export const syncTimerStart = async (userId, timeLeft, mode) => {
-  const expiresAt = new Date(Date.now() + timeLeft * 1000);
-  await setDoc(getTimerRef(userId), {
-    isRunning: true,
-    expiresAt,
-    mode,
-    updatedAt: serverTimestamp()
-  }, { merge: true });
+export const recordSessionChunk = async (userId, data) => {
+  if (!userId || data.duration < 10) return;
+  const historyRef = collection(database, "users", userId, "sessions");
+  await addDoc(historyRef, {
+    ...data,
+    timestamp: serverTimestamp(),
+  });
 };
 
-export const syncTimerPause = async (userId, timeLeft, mode) => {
-  await setDoc(getTimerRef(userId), {
-    isRunning: false,
-    expiresAt: null, 
-    timeLeftAtPause: timeLeft,
-    mode,
-    updatedAt: serverTimestamp()
-  }, { merge: true });
+export const updateLivePointer = async (userId, payload) => {
+  if (!userId) return;
+  const liveRef = doc(database, "users", userId, "state", "active");
+  await setDoc(liveRef, { ...payload, updatedAt: serverTimestamp() }, { merge: true });
 };
 
-export const listenToRemoteTimer = (userId, callback) => {
-  return onSnapshot(getTimerRef(userId), (snapshot) => {
+export const listenToTimer = (userId, callback) => {
+  const liveRef = doc(database, "users", userId, "state", "active");
+  return onSnapshot(liveRef, (snapshot) => {
     if (snapshot.exists()) callback(snapshot.data());
   });
 };
