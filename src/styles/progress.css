@@ -1,133 +1,101 @@
 .progress-dashboard {
-  padding: 20px;
-  background-color: #f9f9f9; /* Light grey background like wireframe */
+  padding: 30px;
+  background-color: #f8f9fa;
   min-height: 100vh;
 }
 
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto auto;
-  gap: 20px;
   grid-template-areas: 
     "time streak motiv task"
     "weekly weekly weekly tracker";
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .card {
   background: white;
-  border-radius: 24px; /* Soft rounded corners from wireframe */
+  border-radius: 24px;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  border: 1px solid #efefef;
 }
 
-/* Mapping areas */
+/* Area Mapping */
 .time-spent { grid-area: time; }
-.streak-mini { grid-area: streak; text-align: center; }
-.daily-motivation { grid-area: motiv; grid-column: span 1; }
-.task-completion { grid-area: task; text-align: center; }
-.weekly-chart { grid-area: weekly; }
-.assignment-tracker { grid-area: tracker; }
-
-/* Tracker UI */
-.tracker-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.checkbox-mock {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-}
-
-.line-mock {
-  height: 8px;
-  background: #eee;
-  flex-grow: 1;
-  border-radius: 4px;
-}
-
-.streak-icon {
-  font-size: 2rem;
-  margin-top: 5px;
-}
-.progress-dashboard {
-  padding: 40px;
-  background-color: #f5f5f5;
-  min-height: 100vh;
-}
-
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 150px 400px;
-  gap: 20px;
-  grid-template-areas: 
-    "time streak motiv task"
-    "weekly weekly weekly tracker";
-}
-
-.card {
-  background: white;
-  border-radius: 28px;
-  padding: 24px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-  border: 1px solid #eaeaea;
-}
-
-.time-spent { grid-area: time; display: flex; justify-content: space-between; }
 .streak-mini { grid-area: streak; text-align: center; }
 .daily-motivation { grid-area: motiv; }
 .task-completion { grid-area: task; text-align: center; }
 .weekly-chart { grid-area: weekly; }
 .assignment-tracker { grid-area: tracker; }
 
-/* Wireframe Elements */
-.line, .line-short, .line-mock {
-  background: #f0f0f0;
-  height: 8px;
-  border-radius: 4px;
-  margin-top: 8px;
-}
-.line-short { width: 60%; margin: 8px auto; }
+/* Visual Elements */
+.card-label { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+.streak-num { font-size: 2.2rem; font-weight: bold; }
+.quote { font-style: italic; color: #555; line-height: 1.5; }
 .checkbox-mock {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  flex-shrink: 0;
+  width: 20px; height: 20px; border: 2px solid #ddd;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; color: white;
 }
-.tracker-item {
+.checkbox-mock.checked { background: #8884d8; border-color: #8884d8; }
+.strikethrough { text-decoration: line-through; color: #aaa; }
+/* Pet Card Styling */
+.pet-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
+  gap: 15px;
+  height: 100%;
 }
-.tracker-item {
+
+.pet-emoji {
+  font-size: 2.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.xp-bar-mini {
+  width: 60px;
+  height: 6px;
+  background: #eee;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.xp-fill-mini {
+  height: 100%;
+  background: #8884d8;
+  border-radius: 10px;
+}
+
+/* Achievements Styling */
+.badge-row {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.checkbox-mock.checked {
-  background-color: var(--baby-blue);
-  border-color: var(--baby-blue);
+.badge-item {
+  background: #f8f9fa;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  font-size: 1.2rem;
 }
 
-.strikethrough {
-  text-decoration: line-through;
-  opacity: 0.5;
+.badge-item.locked {
+  filter: grayscale(1);
+  opacity: 0.3;
 }
 
-.streak-val {
-  font-size: 2rem;
-  font-weight: bold;
+.streak-text {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 10px;
 }

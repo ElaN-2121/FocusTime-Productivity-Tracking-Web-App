@@ -1,20 +1,30 @@
-// services/progressService.js
-import { database } from ".firebase/firebaseConfig.js";
-import { doc, onSnapshot, collection, query, where } from "firebase/firestore";
+// src/services/progressService.js
+import { database } from "./firebase/firebaseConfig"; //
+import { doc, onSnapshot } from "firebase/firestore";
 
-// Fetch real-time progress data for a specific user
+/**
+ * Syncs user-specific progress data from Firestore in real-time.
+ * @param {string} userId - The UID of the logged-in user.
+ * @param {function} callback - Function to handle the retrieved data.
+ */
 export const syncUserProgress = (userId, callback) => {
-  if (!userId) return;
+  if (!userId) {
+    console.error("No userId provided to syncUserProgress");
+    return null;
+  }
 
-  // Reference to the user's specific progress document
-  const progressRef = doc(database, "progress", userId);
+  // Reference to the specific stats document for this user
+  const progressRef = doc(database, "userStats", userId);
 
+  // Set up real-time listener
   return onSnapshot(progressRef, (snapshot) => {
     if (snapshot.exists()) {
       callback({ id: snapshot.id, ...snapshot.data() });
     } else {
-      console.log("No progress data found for this user.");
+      console.warn("No progress document found for this user.");
       callback(null);
     }
+  }, (error) => {
+    console.error("Error syncing user progress:", error);
   });
 };

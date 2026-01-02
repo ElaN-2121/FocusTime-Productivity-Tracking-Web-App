@@ -1,5 +1,6 @@
 import React from "react";
 import "../../styles/home.css";
+import img from "../../assets/hero-img.png";
 
 export default function Home({ onNavigate, notifications, focusMinutes }) {
   return (
@@ -47,7 +48,7 @@ export default function Home({ onNavigate, notifications, focusMinutes }) {
         </div>
 
         <div className="home-right">
-          <div className="image-placeholder">Image</div>
+          <img src={img} className="image-placeholder" alt="FocusTime Hero" />
 
           <div className="card about-card">
             <h3>About</h3>
