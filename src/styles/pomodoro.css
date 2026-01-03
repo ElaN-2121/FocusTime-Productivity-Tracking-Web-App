@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly; /* Better distribution to prevent "bunching" */
+  justify-content: space-evenly;
   height: calc(100vh - 60px);
   width: 100%;
   max-width: 1200px;
@@ -12,7 +12,7 @@
   transition: background 0.5s ease;
 }
 
-/* Dynamic background atmosphere */
+
 .pomodoro-container.focus-mode-active {
   background: radial-gradient(
     circle at center,
@@ -25,11 +25,11 @@
   font-size: clamp(1.5rem, 4vh, 2.5rem);
   font-weight: 700;
   color: var(--text-main);
-  margin: 0; /* Removed margin-bottom to let space-evenly work */
+  margin: 0;
   letter-spacing: -1px;
 }
 
-/* Flip Clock */
+
 .flip-clock {
   display: flex;
   justify-content: center;
@@ -45,7 +45,7 @@
   padding: 3vh 3vw;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  min-width: 160px; /* Reduced slightly for better fit */
+  min-width: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +58,7 @@
   line-height: 1;
 }
 
-/* Controls (Start/Pause/Reset) */
+
 .controls {
   display: flex;
   justify-content: center;
@@ -91,7 +91,7 @@
 .control-btn.start {
   background: var(--primary);
   color: white;
-  width: 72px; /* Made slightly larger for focus */
+  width: 72px; 
   height: 72px;
 }
 

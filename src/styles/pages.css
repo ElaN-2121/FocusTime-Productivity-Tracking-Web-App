@@ -11,8 +11,6 @@
   gap: 8px;
   margin-top: 24px;
   padding: 10px;
-
-  /* Ensure it doesn't overflow horizontally on the page wrapper */
   max-width: 100%;
   width: 100%;
   border-radius: var(--radius-md);
@@ -21,7 +19,7 @@
 .add-stage-row{
   margin-top: 10px;
 }
-/* Hide scrollbar for cleaner look (optional) */
+
 .task-board-container::-webkit-scrollbar {
   height: 8px;
 }
@@ -46,7 +44,7 @@
   font-weight: 700;
 }
 
-/* Task Cards */
+
 .task-card {
   padding: 16px;
   margin-top: 10px;
@@ -79,7 +77,7 @@
   margin: 0;
 }
 
-/* Badge Logic */
+
 .badge {
   font-size: 0.75rem;
   padding: 4px 10px;
@@ -117,7 +115,7 @@
   transition: all 0.2s;
 }
 
-/* Edit Button - Brand Purple */
+
 .action-btn.edit {
   color: blue;
   background-color: rgba(108, 99, 255, 0.1); /* Soft purple tint */
@@ -129,7 +127,7 @@
   color: white;
 }
 
-/* Delete Button - Danger Red */
+
 .action-btn.delete {
   color: red;
   background-color: rgba(239, 68, 68, 0.1); /* Soft red tint */
@@ -144,7 +142,6 @@
 /* Bottom Grid (Assignments & Exams) */
 .bottom-sections-grid {
   display: grid;
-  /* Automatically wraps, but forces 350px minimum width per card */
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 24px;
   width: 100%;
@@ -169,7 +166,7 @@
   gap: 12px;
 }
 
-/* Modals */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -179,7 +176,6 @@
   align-items: center;
   z-index: 2000;
   backdrop-filter: blur(4px);
-  /* Add padding to ensure modal doesn't touch screen edges */
   padding: 20px;
 }
 
@@ -188,7 +184,7 @@
   padding: 30px;
   border-radius: 25px;
   width: 450px;
-  max-width: 90%; /* Prevents overflow on small screens */
+  max-width: 90%;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 

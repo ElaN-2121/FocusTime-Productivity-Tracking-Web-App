@@ -1,5 +1,3 @@
-/* src/styles/taskboard.css */
-
 .taskboard-main {
   display: flex;
   flex-direction: column;
@@ -27,18 +25,18 @@
   gap: 12px;
 }
 
-/* Kanban Board - Matching the light blue tint background in the image */
+
 .task-board-container {
   display: flex;
   gap: 20px;
   margin-top: 24px;
   padding: 24px;
-  background-color: #e2eeff; /* Light blue tint from your image */
+  background-color: #e2eeff; 
   border-radius: var(--radius);
   overflow-x: auto;
 }
 
-/* Dark mode adjustment for the board floor */
+
 body[data-theme="dark"] .task-board-container {
   background-color: rgba(108, 99, 255, 0.05);
 }
@@ -62,7 +60,6 @@ body[data-theme="dark"] .task-board-container {
   padding-left: 8px;
 }
 
-/* Task Cards - Replicating the clean bordered look */
 .task-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -96,7 +93,7 @@ body[data-theme="dark"] .task-board-container {
   font-weight: 600;
 }
 
-/* Badges from your reference image */
+
 .task-badge {
   font-size: 0.65rem;
   padding: 2px 8px;
@@ -109,7 +106,6 @@ body[data-theme="dark"] .task-board-container {
 .task-badge.assignment { background: #fef3c7; color: #b45309; }
 .task-badge.exam { background: #fee2e2; color: #b91c1c; }
 
-/* Bottom Grid for Assignments/Exams */
 .bottom-sections-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));

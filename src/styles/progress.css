@@ -1,8 +1,5 @@
-/* src/styles/progress.css */
-
 /* 1. THEME & CONTAINER */
 .progress-dashboard {
-  /* Maps to your global variables or falls back to clean defaults */
   --pg-bg: var(--background, #f8f9fa);
   --pg-card: var(--surface, #ffffff);
   --pg-text: var(--text-main, #1f2937);
