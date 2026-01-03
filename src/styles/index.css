@@ -1,0 +1,37 @@
+/* index.css or App.css */
+
+:root {
+  /* --- LIGHT MODE (Default) --- */
+  --bg-main: #f8f9fa;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --text-on-accent: #ffffff;
+  
+  --accent-purple: #8884d8;
+  --accent-light: #f0f0ff;
+  --border-color: rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  
+  --streak-orange: #ff7675;
+}
+
+[data-theme='dark'] {
+  /* --- DARK MODE --- */
+  --bg-main: #121212;      /* Deep background */
+  --bg-sidebar: #1e1e1e;   /* Slightly lighter sidebar */
+  --bg-card: #1e1e1e;      /* Matching card background */
+  
+  --text-primary: #f5f6fa;
+  --text-secondary: #b2bec3;
+  --text-on-accent: #ffffff;
+  
+  --accent-purple: #a29bfe; /* Brighter purple for dark mode visibility */
+  --accent-light: rgba(162, 155, 254, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  
+  --streak-orange: #ff7675;
+}

@@ -1,56 +1,54 @@
-
-:root {
-  /* Color Palette */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --bg-body: #f3f4f6;
-  --bg-card: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border: #e5e7eb;
-
-  /* Spacing & Radius */
-  --radius-md: 8px;
-  --radius-sm: 15px;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
 .btn {
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  border-radius: var(--radius);
   border: none;
-  font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
   font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
-
-/* Specific Variants */
-.btn-primary {
-  width:fit-content;
-  background-color: var(--primary);
+btn btn-delete{
+  background: var(--primary-dark);
   color: white;
-  align-self: center ;
-}
-.btn-primary:hover {
-  background-color: var(--primary-hover);
-}
-
-.btn-edit {
-  background-color: transparent;
-  color: var(--primary);
-  padding: 4px 8px;
-}
-.btn-edit:hover {
-  background-color: #eff6ff; /* light blue */
-}
-
-.btn-delete {
-  background-color: transparent;
-  color: var(--danger);
-  padding: 4px 8px;
 }
 .btn-delete:hover {
-  background-color: #fef2f2; /* light red */
+  background: var(--danger-dark);
+  transform: translateY(-1px);
+}
+.btn-edit {
+  background: varvar(--primary-dark);
+  color: white;
+}
+.btn-edit:hover {  
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  background: var(--surface);
+}
+@media (max-width: 480px) {
+  .btn {
+    width: 100%; /* Full width buttons are easier to tap on mobile */
+    padding: 12px 20px;
+  }
+  
+  .home-actions {
+    flex-direction: column; /* Stack buttons in Pomodoro/Home actions */
+    width: 100%;
+  }
 }

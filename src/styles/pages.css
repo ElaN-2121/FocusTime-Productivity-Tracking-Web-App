@@ -1,38 +1,8 @@
-:root {
-  /* Color Palette */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --bg-body: #f3f4f6;
-  --bg-card: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border: #e5e7eb;
 
-  /* Spacing & Radius */
-  --radius-md: 12px;
-  --radius-lg: 25px;
-  --radius-sm: 4px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Layout Container */
-.dashboard-layout {
-  padding: 40px;
-  background-color: #f8f9fa;
-  min-height: 100vh;
-  box-sizing: border-box;
-  width: 100%; /* Ensures it fills the screen */
-}
-
-/* Header */
 .todo-header {
-  background: white;
   border-radius: 20px;
   padding: 15px 30px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 /* Kanban Board Container */
@@ -45,18 +15,17 @@
   /* Ensure it doesn't overflow horizontally on the page wrapper */
   max-width: 100%;
   width: 100%;
-  background-color: #e2eeff;
   border-radius: var(--radius-md);
-  
   flex-wrap: wrap;
 }
-
+.add-stage-row{
+  margin-top: 10px;
+}
 /* Hide scrollbar for cleaner look (optional) */
 .task-board-container::-webkit-scrollbar {
   height: 8px;
 }
 .task-board-container::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
   border-radius: 4px;
 }
 
@@ -65,8 +34,7 @@
   border-radius: var(--radius-md);
   padding: 16px;
   width: 300px;
-  min-width: 300px; /* Prevents columns from squishing too small */
-  background-color: #f9fafb;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   
@@ -75,16 +43,13 @@
 .kanban-column h3 {
   font-size: 1.1rem;
   margin-bottom: 16px;
-  color: var(--text-main);
   font-weight: 700;
 }
 
 /* Task Cards */
 .task-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
   padding: 16px;
+  margin-top: 10px;
   margin-bottom: 12px;
   box-shadow: var(--shadow-sm);
   cursor: grab;
@@ -141,12 +106,39 @@
   line-height: 1.5;
 }
 
-.task-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f3f4f6;
-  padding-top: 10px;
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+/* Edit Button - Brand Purple */
+.action-btn.edit {
+  color: blue;
+  background-color: rgba(108, 99, 255, 0.1); /* Soft purple tint */
+  align-self: flex-start;
+}
+
+.action-btn.edit:hover {
+  background-color: blue;
+  color: white;
+}
+
+/* Delete Button - Danger Red */
+.action-btn.delete {
+  color: red;
+  background-color: rgba(239, 68, 68, 0.1); /* Soft red tint */
+  align-self: flex-end;
+}
+
+.action-btn.delete:hover {
+  background-color: red;
+  color: white;
 }
 
 /* Bottom Grid (Assignments & Exams) */
@@ -160,8 +152,7 @@
 }
 
 .side-card {
-  background: white;
-  border-radius: var(--radius-lg);
+  border-radius: 15px;
   padding: 25px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
   display: flex;
@@ -169,6 +160,7 @@
 }
 
 .side-list {
+  margin-top: 10px;
   text-align: left;
   color: var(--text-muted);
   font-size: 14px;
@@ -205,108 +197,4 @@
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
-}
-
-/* =========================================
-   RESPONSIVE MEDIA QUERIES
-   ========================================= */
-
-/* Tablets and Small Laptops (max-width: 1024px) */
-@media (max-width: 1024px) {
-  .bottom-sections-grid {
-    /* Allow cards to shrink slightly more on tablets */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-}
-
-/* Mobile Devices (max-width: 768px) */
-@media (max-width: 768px) {
-  /* 1. Reduce Global Padding */
-  .dashboard-layout {
-    padding: 20px;
-  }
-
-  /* 2. Header Adjustments */
-  .todo-header {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-  }
-  .add-column-controls {
-    margin-bottom: 20px;
-    display: flex;
-    gap: 10px;
-    background: white;
-    padding: 15px;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    width: fit-content;
-  }
-
-  .form-input {
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    outline: none;
-  }
-
-  /* 3. Kanban Board for Touch/Scroll */
-  .task-board-container {
-    margin-top: 16px;
-    gap: 12px;
-  }
-
-  .kanban-column {
-    /* Take up more width on mobile, but keep scrolling */
-    width: 85vw;
-    min-width: 280px;
-    padding: 12px;
-  }
-
-  /* 4. Bottom Grid: Force Vertical Stack */
-  .bottom-sections-grid {
-    margin-top: 20px;
-    gap: 16px;
-    grid-template-columns: 1fr; /* Single column stack */
-  }
-
-  .side-card {
-    padding: 20px;
-    border-radius: 16px;
-  }
-
-  /* 5. Modal Adjustments */
-  .modal-overlay {
-    padding: 15px;
-    align-items: flex-end; /* Slide up from bottom feel on very small screens? Or keep centered. Let's keep centered for simplicity */
-    align-items: center;
-  }
-
-  .modal-content {
-    width: 100%;
-    padding: 20px;
-    border-radius: 16px;
-    max-height: 90vh;
-    overflow-y: auto; /* Scroll inside modal if content is long */
-  }
-}
-
-/* Extra Small Mobile (max-width: 480px) */
-@media (max-width: 480px) {
-  .task-title {
-    font-size: 0.95rem;
-  }
-
-  .badge {
-    font-size: 0.65rem;
-    padding: 2px 8px;
-  }
-
-  .modal-actions {
-    flex-direction: column; /* Stack buttons vertically on tiny screens */
-  }
-
-  .modal-actions button {
-    width: 100%;
-  }
 }

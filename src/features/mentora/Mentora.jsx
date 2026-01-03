@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { summarizeNoteAI } from "../../services/noteService"; 
 import "../../styles/mentora.css";
 
-export default function Mentora() { // Removed isOpen, onClose props
+export default function Mentora() {
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hi! I'm Mentora. How can I help you reach your focus goals today?" }
   ]);
@@ -10,13 +10,12 @@ export default function Mentora() { // Removed isOpen, onClose props
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
 
-  // Auto-scroll to bottom of chat
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
     const userMsg = { role: "user", content: input };
     setMessages(prev => [...prev, userMsg]);
@@ -27,7 +26,7 @@ export default function Mentora() { // Removed isOpen, onClose props
       const aiResponse = await summarizeNoteAI(input); 
       setMessages(prev => [...prev, { role: "assistant", content: aiResponse }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting." }]);
+      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting right now." }]);
     } finally {
       setLoading(false);
     }
@@ -36,6 +35,13 @@ export default function Mentora() { // Removed isOpen, onClose props
   return (
     <div className="mentora-page">
       <div className="mentora-chat-container">
+        
+        {/* NEW: Chat Header */}
+        <header className="mentora-header">
+          <div className="status-indicator"></div>
+          <h2>Mentora AI Guide</h2>
+        </header>
+
         <div className="mentora-chat-window">
           {messages.map((m, i) => (
             <div key={i} className={`chat-bubble-wrapper ${m.role}`}>
@@ -46,7 +52,9 @@ export default function Mentora() { // Removed isOpen, onClose props
           ))}
           {loading && (
             <div className="chat-bubble-wrapper assistant">
-              <div className="chat-bubble assistant loading-dots">Thinking...</div>
+              <div className="chat-bubble assistant">
+                <span className="typing-loader">Thinking...</span>
+              </div>
             </div>
           )}
           <div ref={scrollRef} />
@@ -60,7 +68,10 @@ export default function Mentora() { // Removed isOpen, onClose props
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Type your message here..."
             />
-            <button onClick={handleSend} className="fp-btn-save">Send</button>
+            {/* NEW: Round Send Button */}
+            <button onClick={handleSend} className="btn-send" title="Send Message">
+               ➔
+            </button>
           </div>
         </div>
       </div>

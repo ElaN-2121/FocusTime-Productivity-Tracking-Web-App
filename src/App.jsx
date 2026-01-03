@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import "./styles/index.css";
 
 import Sidebar from "./components/layout/Sidebar";
 import Navbar from "./components/layout/Navbar";

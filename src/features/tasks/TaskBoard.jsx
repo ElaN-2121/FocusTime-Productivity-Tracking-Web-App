@@ -6,7 +6,9 @@ import TaskCard from "./TaskCard";
 import "../../styles/global.css";
 import "../../styles/buttons.css";
 import "../../styles/forms.css";
+
 import "../../styles/pages.css";
+
 import "../../styles/taskboard.css";
 
 export default function TaskBoard() {

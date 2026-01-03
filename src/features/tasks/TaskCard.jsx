@@ -1,55 +1,26 @@
-import React from "react";
-import "../../styles/global.css";
-import "../../styles/buttons.css";
-import "../../styles/forms.css";
-
-export default function TaskCard({ task, onDelete, onMove, onEdit, stages }) {
-  const handleDragStart = (e) => {
-    e.dataTransfer.setData("taskId", task.id);
-  };
+// src/features/tasks/TaskCard.jsx
+import "../../styles/pages.css";
+import "../../styles/taskboard.css";
+export default function TaskCard({ task, onEdit, onDelete }) {
   return (
-    <div className="task-card" draggable onDragStart={handleDragStart}>
-      <div className="task header">
-        <h4 className="task-title">{task.title}</h4>
-        <span className={`badge ${task.type}`}>
-          {task.type === "assignment" && "📘 Assignment"}
-          {task.type === "exam" && "📝 exam"}
-          {task.type === "task" && "📘 task"}
-        </span>
+    <div 
+      className="task-card" 
+      draggable 
+      onDragStart={(e) => e.dataTransfer.setData("taskId", task.id)}
+    >
+      <div className="task-card-header">
+        <span className={`task-badge ${task.type}`}>{task.type}</span>
+        <div className="task-actions">
+          <button className="action-btn edit" onClick={() => onEdit(task)}>✎</button>
+          <button className="action-btn delete" onClick={() => onDelete(task.id)}>&times;</button>
+        </div>
       </div>
-      <p className="task-desc">{task.description}</p>
-      {task.dueDate && (
-        <div
-          style={{ fontSize: "0.8rem", color: "#6b7280", marginBottom: "10px" }}
-        >
-          📅Due: {new Date(task.dueDate).toLocaleDateString()}
-        </div>
-      )}
-      <div className="task-actions" style={{display: "flex", 
       
-    flexWrap: "wrap", /* Allows buttons to wrap to next line if no space */
-    gap: "10px", 
-    justifyContent: "space-between",
-    alignItems: "center"}}>
-        <select
-          className="form-select"
-          value={task.status}
-          onChange={(e) => onMove(task.id, e.target.value)}
-        >
-          {stages.map((stage) => (
-            <option key={stage} value={stage}>
-              {stage}
-            </option>
-          ))}
-        </select>
-        <div>
-          <button className="btn btn-edit" onClick={() => onEdit(task)}>
-            Edit
-          </button>
-          <button className="btn btn-delete" onClick={() => onDelete(task.id)}>
-            Delete
-          </button>
-        </div>
+      <h4>{task.title}</h4>
+      <p className="task-desc">{task.description}</p>
+      
+      <div className="task-footer">
+        <span>{task.dueDate ? `📅 ${task.dueDate}` : "No deadline"}</span>
       </div>
     </div>
   );

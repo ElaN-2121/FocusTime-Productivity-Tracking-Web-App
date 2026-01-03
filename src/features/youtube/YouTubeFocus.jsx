@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { getFocusedVideos } from "../../services/youtubeService";
 import "../../styles/youtube.css";
 
@@ -13,21 +13,19 @@ export default function YouTubeFocus() {
     if (!query) return;
     setLoading(true);
     setIsDistraction(false);
-    
+
     const result = await getFocusedVideos(query);
     setHasSearched(true);
     setLoading(false);
-    
+
     if (result.success) {
       setVideos(result.data);
       setIsDistraction(result.totalFound > 0 && result.data.length === 0);
     }
   };
 
-  // Main Return Statement
   return (
     <div className="yt-container">
-      {/* 1. Conditional Rendering for Player View */}
       {selectedVideo ? (
         <div className="yt-player-view">
           <button className="back-btn" onClick={() => setSelectedVideo(null)}>
@@ -41,45 +39,80 @@ export default function YouTubeFocus() {
               allowFullScreen
             ></iframe>
           </div>
-          <h2 className="video-title">{selectedVideo.snippet.title}</h2>
-          <p className="video-channel">{selectedVideo.snippet.channelTitle}</p>
+          <div className="yt-player-info">
+            <h2>{selectedVideo.snippet.title}</h2>
+            <p>{selectedVideo.snippet.channelTitle}</p>
+          </div>
         </div>
       ) : (
-        /* 2. Search and Gallery View */
         <>
           <div className="yt-header">
-            <input 
-              type="text" 
-              placeholder="Search educational topics...🔎" 
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch(e.target.value)}
-            />
+            <h1>YouTube Focus Mode</h1>
+            <p style={{ color: "var(--text-muted)", marginBottom: "20px" }}>
+              Distraction-free learning. Only educational content allowed.
+            </p>
+            <div className="yt-search-wrapper">
+              <input
+                type="text"
+                placeholder="Search tutorials, lectures, or topics... 🔎"
+                onKeyDown={(e) =>
+                  e.key === "Enter" && handleSearch(e.target.value)
+                }
+              />
+            </div>
           </div>
 
           <div className="yt-content">
-            {loading && <p className="loading-text">Filtering distractions...</p>}
+            {loading && (
+              <div style={{ textAlign: "center", padding: "50px" }}>
+                <div className="loader"></div>
+                <p>Filtering distractions...</p>
+              </div>
+            )}
 
             {isDistraction && !loading && (
               <div className="distraction-warning">
                 <span className="warning-icon">🚫</span>
-                <h3>Distraction Detected</h3>
-                <p>Try a more specific educational topic like "React Tutorial".</p>
+                <h3>Distraction Blocked</h3>
+                <p>
+                  That topic seems non-educational. Try "Data Structures" or
+                  "Chemistry Basics".
+                </p>
               </div>
             )}
 
-            {hasSearched && !isDistraction && !loading && videos.length === 0 && (
-              <p className="no-results">No videos found. Try different keywords.</p>
+            {!hasSearched && !loading && (
+              <div
+                style={{
+                  textAlign: "center",
+                  opacity: 0.5,
+                  marginTop: "100px",
+                }}
+              >
+                <span style={{ fontSize: "4rem" }}>📚</span>
+                <h3>Ready to learn?</h3>
+                <p>Search for a topic to start your focused study session.</p>
+              </div>
             )}
 
             <div className="yt-grid">
-              {!loading && videos.map(v => (
-                <div key={v.id.videoId} className="yt-card" onClick={() => setSelectedVideo(v)}>
-                  <img src={v.snippet.thumbnails.medium.url} alt="thumbnail" />
-                  <div className="yt-card-body">
-                    <h3>{v.snippet.title}</h3>
-                    <span>{v.snippet.channelTitle}</span>
+              {!loading &&
+                videos.map((v) => (
+                  <div
+                    key={v.id.videoId}
+                    className="yt-card"
+                    onClick={() => setSelectedVideo(v)}
+                  >
+                    <img
+                      src={v.snippet.thumbnails.medium.url}
+                      alt="thumbnail"
+                    />
+                    <div className="yt-card-body">
+                      <h3>{v.snippet.title}</h3>
+                      <span>{v.snippet.channelTitle}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </>

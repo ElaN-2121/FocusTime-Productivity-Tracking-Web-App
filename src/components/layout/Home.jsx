@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/home.css";
+import "../../styles/HomePage.css";
 import img from "../../assets/hero-img.png";
 
 export default function Home({ onNavigate, notifications, focusMinutes }) {

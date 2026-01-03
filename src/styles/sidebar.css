@@ -1,110 +1,210 @@
+/* ===== Variables & Reset ===== */
 :root {
-  --sidebar-width: 240px; /* Narrower width */
-  --sidebar-bg: #f8f9fa;
-  --sidebar-text: #555;
-  --sidebar-border: #ececed;
-  --nav-item-padding: 8px 12px; /* Reduced from 15px */
-  --nav-gap: 4px; /* Tighter gap between items */
+  --sidebar-width: 260px;
+  --transition-speed: 0.3s;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ===== Hamburger Button (Mobile) ===== */
+.hamburger {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1001;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Sidebar Container ===== */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: var(--sidebar-width);
   height: 100vh;
-  background-color: var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Pushes footer to bottom */
-  padding: 20px 12px; /* Reduced padding */
-  position: fixed;
-  left: 0;
-  top: 0;
-  overflow: hidden; /* NO SCROLLING */
-  transition: all 0.3s ease;
+  padding: 24px 16px;
   z-index: 1000;
+  overflow-y: auto;
+  transition: transform var(--transition-speed) var(--ease), visibility var(--transition-speed);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
 }
 
-/* --- Logo Section --- */
+/* ===== Logo Section ===== */
 .logo-section {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px; /* Reduced from 40px */
+  gap: 12px;
+  padding: 0 12px 32px 12px;
 }
 
 .focustime-logo {
-  width: 35px; /* Smaller logo */
-  height: 35px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
 }
 
 .logo-text {
-  font-size: 1rem; /* Smaller text */
+  font-size: 1.25rem;
   font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
 }
 
-/* --- Navigation List --- */
+/* ===== Navigation ===== */
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: var(--nav-gap);
+  gap: 4px;
+  flex-grow: 1;
 }
 
 .nav-item {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: var(--nav-item-padding);
-  border-radius: 8px;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  color: var(--sidebar-text);
-  font-size: 0.85rem; /* Compact font size */
-  font-weight: 500;
-  transition: 0.2s;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all 0.2s var(--ease);
 }
 
-.nav-item .nav-icon {
-  font-size: 1.1rem; /* Slightly smaller icons */
+.nav-item:hover {
+  background: var(--background);
+  transform: translateX(4px);
 }
 
-.nav-item:hover, .nav-item.active {
-  background-color: #fff;
-  color: #a2d2ff;
+.nav-item.active {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 }
 
-/* --- Footer Section --- */
-.sidebar-footer {
-  border-top: 1px solid var(--sidebar-border);
-  padding-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--nav-gap);
+/* Active Indicator Pill */
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  height: 20px;
+  width: 4px;
+  background: var(--primary);
+  border-radius: 0 4px 4px 0;
 }
 
-.theme-toggle-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: var(--nav-item-padding);
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: var(--sidebar-text);
+.nav-icon {
+  font-size: 1.2rem;
   opacity: 0.8;
 }
 
-.theme-toggle-container:hover {
+.nav-item.active .nav-icon {
   opacity: 1;
-  color: #a2d2ff;
 }
 
-/* --- Logout Styling --- */
+.nav-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ===== Sidebar Footer ===== */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+  margin-top: 20px;
+}
+
+.theme-toggle-container, .logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.theme-toggle-container:hover {
+  background: var(--background);
+}
+
+.logout {
+  color: var(--danger);
+  font-weight: 600;
+}
+
 .logout:hover {
-  background-color: #fff1f1 !important;
-  color: #ff4d4d !important;
+  background: rgba(239, 68, 68, 0.08);
 }
 
-/* Response: On very short screens, we decrease gaps even further */
-@media (max-height: 600px) {
-  .logo-section { margin-bottom: 10px; }
-  .nav-item { padding: 6px 10px; font-size: 0.8rem; }
-  .sidebar { padding: 10px; }
+/* ===== Overlay (Mobile) ===== */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== Main Content Area ===== */
+.main-content {
+  /* Default for mobile: No margin, full width */
+  margin-left: 0 !important; 
+  padding: 20px;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+  }
+
+  .hamburger {
+    display: none !important;
+  }
+
+  /* Only push the content if we are on a desktop screen */
+  .main-content {
+    margin-left: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width));
+  }
+}
+
+/* ===== Mobile Behavior (Up to 767px) ===== */
+@media (max-width: 767px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .hamburger {
+    display: block; /* Show hamburger in mobile */
+  }
 }

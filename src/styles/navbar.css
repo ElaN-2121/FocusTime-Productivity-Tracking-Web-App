@@ -1,0 +1,88 @@
+/* ===== Navbar Container ===== */
+.top-navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+/* Content wrapper */
+.navbar-content {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Page title */
+.page-title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-main);
+  letter-spacing: 0.2px;
+}
+
+/* Actions container */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Notification button (quiet) */
+.icon-btn-small {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.icon-btn-small:hover {
+  opacity: 1;
+}
+
+/* User badge (subtle) */
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* User text */
+.user-text {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.user-streak {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* Avatar (minimal) */
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+@media (max-width: 768px) {
+  .navbar-content {
+    padding: 0; /* Remove extra padding that might be squashing items */
+    gap: 10px;
+  }
+  
+  .page-title {
+    font-size: 1rem; /* Smaller font for mobile */
+  }
+}

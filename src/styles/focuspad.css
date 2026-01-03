@@ -1,48 +1,46 @@
 /* 1. THEME VARIABLES */
 :root {
-  /* Light Mode Colors */
+  /* Light Mode Colors (Default) */
   --fp-bg: #ffffff;
   --fp-sidebar-bg: #fbfbfa;
   --fp-border: #ececed;
   --fp-text-main: #37352f;
   --fp-text-sub: #888888;
   --fp-baby-blue: #a2d2ff;
-  --fp-baby-blue-hover: #8ec5f7;
+  --fp-baby-blue-hover: #539ee4;
   --fp-active-item: #ebf5ff;
   --fp-ai-bg: #f0f7ff;
   --fp-ai-text: #2c5282;
   --fp-input-bg: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark Mode Colors */
-    --fp-bg: #191919;
-    --fp-sidebar-bg: #202020;
-    --fp-border: #2f2f2f;
-    --fp-text-main: #dcdcdc;
-    --fp-text-sub: #999999;
-    --fp-baby-blue: #7fb5ff; /* Slightly deeper for contrast */
-    --fp-baby-blue-hover: #a2d2ff;
-    --fp-active-item: #2d3748;
-    --fp-ai-bg: #1a202c;
-    --fp-ai-text: #a3bfdf;
-    --fp-input-bg: #252525;
-  }
+body[data-theme="dark"] .focuspad-root {
+  --fp-bg: #191919;
+  --fp-sidebar-bg: #202020;
+  --fp-border: #2f2f2f;
+  --fp-text-main: #dcdcdc;
+  --fp-text-sub: #999999;
+  --fp-baby-blue: #7fb5ff; 
+  --fp-baby-blue-hover: #b8ddff;
+  --fp-active-item: #2d3748;
+  --fp-ai-bg: #1a202c;
+  --fp-ai-text: #a3bfdf;
+  --fp-input-bg: #252525;
 }
 
 /* 2. BASE LAYOUT */
 .focuspad-root {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 64px); /* Adjust based on your navbar height */
   background: var(--fp-bg);
   color: var(--fp-text-main);
   font-family: "Inter", -apple-system, sans-serif;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* 3. SIDEBAR */
 .fp-sidebar {
+  margin-left: 20px;
   width: 280px;
   background: var(--fp-sidebar-bg);
   border-right: 1px solid var(--fp-border);
@@ -64,6 +62,7 @@
   color: var(--fp-text-main);
   font-size: 13px;
   margin-bottom: 12px;
+  outline: none;
 }
 
 .fp-btn-new {
@@ -185,7 +184,10 @@
   font-weight: 500;
   cursor: pointer;
 }
-
+.fp-btn-ai:hover {
+  background: var(--fp-baby-blue);
+  color: white;
+}
 .fp-btn-save {
   background: var(--fp-baby-blue);
   color: white;
@@ -194,6 +196,10 @@
   border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.fp-btn-save:hover{
+  background-color: var(--fp-baby-blue-hover);
 }
 
 /* 5. CANVAS / WRITING AREA */
@@ -218,7 +224,8 @@
 }
 
 .fp-title-input::placeholder {
-  color: var(--fp-border);
+  color: var(--fp-text-sub);
+  opacity: 0.3;
 }
 
 .fp-content-editable {

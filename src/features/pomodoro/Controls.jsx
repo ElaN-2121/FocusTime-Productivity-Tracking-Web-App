@@ -1,3 +1,6 @@
+import React from "react";
+import "../../styles/pomodoro.css";
+
 export default function Controls({ isRunning, onStart, onPause, onReset }) {
   return (
     <div className="controls">
@@ -10,7 +13,7 @@ export default function Controls({ isRunning, onStart, onPause, onReset }) {
           Pause
         </button>
       )}
-      <button onClick={onReset}>Reset</button>
+      <button className= "primary" onClick={onReset}> Reset</button>
     </div>
   );
 }
