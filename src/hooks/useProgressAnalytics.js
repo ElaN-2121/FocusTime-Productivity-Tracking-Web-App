@@ -199,6 +199,11 @@ const fetchSessionData = async (userId, analyticsData) => {
     if (weeklyData.some((d) => d.value > 0)) {
       analyticsData.weeklyData = weeklyData;
     }
+    // streak calculation based on completed focus session
+    const computedStreak = calculateStreakFromSessions(sessions);
+    if (!analyticsData.streak || analyticsData.streak === 0) {
+      analyticsData.streak = computedStreak;
+    }
 
     return analyticsData;
   } catch {
@@ -248,6 +253,65 @@ const calculateWeeklyData = (sessions) => {
   });
 
   return weeklyData;
+};
+
+const calculateStreakFromSessions = (sessions) => {
+  try {
+    if (!Array.isArray(sessions) || sessions.length === 0) return 0;
+
+    const toLocalDayKey = (date) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      const y = d.getFullYear();
+      const m = d.getMonth() + 1;
+      const day = d.getDate();
+      return `${y}-${m}-${day}`;
+    };
+
+    const sessionDays = new Set();
+
+    sessions.forEach((s) => {
+      let sessionDate;
+      try {
+        if (s.timestamp && typeof s.timestamp.toDate === "function") {
+          sessionDate = s.timestamp.toDate();
+        } else if (s.timestamp && s.timestamp.seconds) {
+          sessionDate = new Date(s.timestamp.seconds * 1000);
+        } else if (s.timestamp instanceof Date) {
+          sessionDate = s.timestamp;
+        } else {
+          sessionDate = new Date(s.timestamp);
+        }
+      } catch {
+        sessionDate = null;
+      }
+      if (!sessionDate) return;
+      if (s.mode !== "focus" || s.status !== "completed") return;
+      sessionDays.add(toLocalDayKey(sessionDate));
+    });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const hasToday = sessionDays.has(toLocalDayKey(today));
+    const hasYesterday = sessionDays.has(toLocalDayKey(yesterday));
+
+    if (!hasToday && !hasYesterday) return 0;
+
+    let current = hasToday ? new Date(today) : new Date(yesterday);
+    let streak = 0;
+    while (true) {
+      const key = toLocalDayKey(current);
+      if (!sessionDays.has(key)) break;
+      streak += 1;
+      current.setDate(current.getDate() - 1);
+    }
+    return streak;
+  } catch {
+    return 0;
+  }
 };
 
 const fetchTaskData = async (analyticsData) => {
