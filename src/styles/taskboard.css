@@ -119,3 +119,24 @@ body[data-theme="dark"] .task-board-container {
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
+.task-check-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #8884d8;
+}
+
+.completed-opacity {
+  opacity: 0.6;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  color: var(--pg-muted);
+}
