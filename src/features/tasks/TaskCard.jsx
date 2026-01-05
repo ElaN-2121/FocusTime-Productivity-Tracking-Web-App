@@ -1,21 +1,36 @@
 // src/features/tasks/TaskCard.jsx
 import "../../styles/pages.css";
 import "../../styles/taskboard.css";
+export default function TaskCard({ task, onEdit, onDelete, onStatusChange, isSaving }) {
+  const isDone = task.status === "done" || task.status === "Done";
+  const statusLabel = (() => {
+    if (task.status === "todo") return "To-Do";
+    if (task.status === "in-progress") return "In Progress";
+    if (task.status === "done") return "Done";
+    return task.status || "To-Do";
+  })();
 
-export default function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {
+  const handleCheckboxClick = (e) => {
+    e.stopPropagation(); // Prevent drag start or other clicks
+    const newStatus = isDone ? "todo" : "done";
+    onStatusChange(task.id, newStatus);
+  };
+
   return (
     <div 
-      className={`task-card ${task.completed ? "completed-task" : ""}`} 
+      className={`task-card ${isDone ? "completed" : ""}`}
       draggable 
       onDragStart={(e) => e.dataTransfer.setData("taskId", task.id)}
     >
       <div className="task-card-header">
-        <div className="task-check-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="task-status-toggle">
           <input 
             type="checkbox" 
-            checked={task.completed || false} 
-            onChange={() => onToggleComplete(task.id, task.completed)}
-            style={{ cursor: 'pointer', width: '18px', height: '18px' }}
+            checked={isDone} 
+            onChange={handleCheckboxClick}
+            disabled={!!isSaving}
+            className="status-checkbox"
+            title={isDone ? "Mark as To-Do" : "Mark as Done"}
           />
           <span className={`task-badge ${task.type}`}>{task.type}</span>
         </div>
@@ -25,15 +40,12 @@ export default function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {
         </div>
       </div>
       
-      <h4 className={task.completed ? "strikethrough" : ""} style={{ marginTop: '10px' }}>
-        {task.title}
-      </h4>
-      <p className={`task-desc ${task.completed ? "strikethrough" : ""}`}>
-        {task.description}
-      </p>
+      <h4 className={isDone ? "text-strike" : ""}>{task.title}</h4>
+      <p className="task-desc">{task.description}</p>
       
       <div className="task-footer">
         <span>{task.dueDate ? `📅 ${task.dueDate}` : "No deadline"}</span>
+        <span className="status-label">{statusLabel}</span>
       </div>
     </div>
   );
