@@ -1,57 +1,4 @@
 import { database } from "./firebaseConfig";
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
-  onSnapshot, 
-  query, 
-  orderBy, 
-  where, 
-  getDocs, 
-  serverTimestamp 
-} from "firebase/firestore";
-
-// --- COLUMN (STAGE) BACKEND ---
-
-export const addStageToDb = async (stageName) => {
-  return await addDoc(collection(database, "stages"), {
-    name: stageName,
-    createdAt: serverTimestamp(),
-    order: Date.now() 
-  });
-};
-
-export const syncStages = (callback) => {
-  const q = query(collection(database, "stages"), orderBy("order", "asc"));
-  return onSnapshot(q, (snapshot) => {
-    const stages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    callback(stages);
-  });
-};
-
-// New function to handle the deletion logic
-export const deleteStageFromDb = async (stageName) => {
-  const q = query(collection(database, "stages"), where("name", "==", stageName));
-  const querySnapshot = await getDocs(q);
-  
-  // Delete the specific document found by name
-  const deletePromises = querySnapshot.docs.map((document) => deleteDoc(document.ref));
-  return await Promise.all(deletePromises);
-};
-
-// --- TASK BACKEND ---
-
-export const addTask = async (taskData) => {
-  return await addDoc(collection(database, "tasks"), {
-    ...taskData,
-    createdAt: serverTimestamp()
-  });
-};
-
-export const syncTasks = (callback) => {
-  const q = query(collection(database, "tasks"), orderBy("createdAt", "desc"));
 import {
   collection,
   addDoc,
@@ -60,41 +7,82 @@ import {
   doc,
   onSnapshot,
   query,
-  orderBy,
   where,
+  orderBy,
+  getDocs,
   serverTimestamp,
 } from "firebase/firestore";
 
-const tasksCollection = collection(database, "task");
+/* ===================== STAGES ===================== */
+
+const stagesCollection = collection(database, "stages");
+
+export const addStageToDb = async (stageName) => {
+  return await addDoc(stagesCollection, {
+    name: stageName,
+    createdAt: serverTimestamp(),
+    order: Date.now(),
+  });
+};
+
+export const syncStages = (callback) => {
+  const q = query(stagesCollection, orderBy("order", "asc"));
+  return onSnapshot(q, (snapshot) => {
+    const stages = snapshot.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }));
+    callback(stages);
+  });
+};
+
+export const deleteStageFromDb = async (stageName) => {
+  const q = query(stagesCollection, where("name", "==", stageName));
+  const snapshot = await getDocs(q);
+  const deletes = snapshot.docs.map((d) => deleteDoc(d.ref));
+  return Promise.all(deletes);
+};
+
+/* ===================== TASKS ===================== */
+
+const tasksCollection = collection(database, "tasks");
 
 export const addTask = async (userId, taskData) => {
   if (!userId) throw new Error("addTask: Missing userId");
-  const payload = {
+
+  return await addDoc(tasksCollection, {
     ...taskData,
     userId,
     createdAt: serverTimestamp(),
-  };
-  const ref = await addDoc(tasksCollection, payload);
-  return ref;
+  });
 };
 
 export const syncTasks = (userId, callback) => {
   if (!userId) return () => {};
-  const q = query(tasksCollection, where("userId", "==", userId));
+
+  const q = query(
+    tasksCollection,
+    where("userId", "==", userId),
+    orderBy("createdAt", "desc")
+  );
+
   return onSnapshot(q, (snapshot) => {
-    const tasks = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const tasks = snapshot.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }));
     callback(tasks);
   });
 };
 
-export const updateTask = async (userId, id, data) => {
-  if (!id) throw new Error("updateTask: Missing id");
-  const taskRef = doc(database, "task", id);
-  return await updateDoc(taskRef, data);
+export const updateTask = async (userId, taskId, data) => {
+  if (!taskId) throw new Error("updateTask: Missing taskId");
+  const ref = doc(database, "tasks", taskId);
+  return await updateDoc(ref, data);
 };
 
-export const deleteTask = async (userId, id) => {
-  if (!id) throw new Error("deleteTask: Missing id");
-  const taskRef = doc(database, "task", id);
-  return await deleteDoc(taskRef);
+export const deleteTask = async (userId, taskId) => {
+  if (!taskId) throw new Error("deleteTask: Missing taskId");
+  const ref = doc(database, "tasks", taskId);
+  return await deleteDoc(ref);
 };
