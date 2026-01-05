@@ -1,6 +1,8 @@
-//Main Taskboard logic and state management, contains add, move, delete and edit features
+// Main TaskBoard logic and state management
+// Handles add, edit, move, delete tasks and stages
+
 import { useState, useEffect } from "react";
-import { createTask } from "./TaskModel";
+import { createTask } from "./FocusTime-Productivity-Tracking-Web-App/src/features/tasks/TaskModel";
 import {
   getTasks,
   addTask as saveTask,
@@ -11,11 +13,9 @@ import {
 } from "./taskService";
 
 export function useTaskBoard() {
-  const [tasks, setTasks] = useState([]); // A list of tasks
-  const [stages, setStages] = useState(() => {
-    const saved = localStorage.getItem("my_task_board_stages"); // Use the key from taskService
-    return saved ? JSON.parse(saved) : ["To-Do", "In Progress", "Done"];
-  });
+  const [tasks, setTasks] = useState([]);
+  const [stages, setStages] = useState([]);
+
   useEffect(() => {
     async function loadInitialData() {
       try {
@@ -23,41 +23,67 @@ export function useTaskBoard() {
           getTasks(),
           getStages(),
         ]);
-        setTasks(storedTasks);
-        // Sync stages just in case localStorage changed elsewhere
-        if (storedStages && storedStages.length > 0) {
+
+        setTasks(Array.isArray(storedTasks) ? storedTasks : []);
+
+        if (Array.isArray(storedStages) && storedStages.length > 0) {
           setStages(storedStages);
+        } else {
+          const defaultStages = ["To-Do", "In Progress", "Done"];
+          setStages(defaultStages);
+          await saveStages(defaultStages);
         }
       } catch (error) {
-        console.error("Failed to load tasks:", error);
+        console.error("Failed to load task board data:", error);
       }
     }
+
     loadInitialData();
   }, []);
 
+  // ------------------ STAGES ------------------
+
   const addStage = async (stageName) => {
-    if (!stages.includes(stageName)) {
+    if (!stageName || stages.includes(stageName)) return;
+
+    try {
       const newStages = [...stages, stageName];
       setStages(newStages);
       await saveStages(newStages);
+    } catch (error) {
+      console.error("Failed to add stage:", error);
     }
   };
 
   const removeStage = async (stageName) => {
     const protectedStages = ["To-Do", "In Progress", "Done"];
 
-    // If the stage is protected, exit the function immediately
     if (protectedStages.includes(stageName)) {
       alert("This is a core column and cannot be deleted.");
       return;
     }
 
-    // Otherwise, proceed with deletion as normal
-    const newStages = stages.filter((s) => s !== stageName);
-    setStages(newStages);
-    await saveStages(newStages);
+    try {
+      // Move tasks in deleted stage back to "To-Do"
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.status === stageName
+            ? { ...task, status: "To-Do" }
+            : task
+        )
+      );
+
+      const newStages = stages.filter((stage) => stage !== stageName);
+      setStages(newStages);
+      await saveStages(newStages);
+    } catch (error) {
+      console.error("Failed to remove stage:", error);
+    }
   };
-  async function addTask(taskData) {
+
+  // ------------------ TASKS ------------------
+
+  const addTask = async (taskData) => {
     try {
       const newTask = createTask(taskData);
       const savedTask = await saveTask(newTask);
@@ -65,31 +91,46 @@ export function useTaskBoard() {
     } catch (error) {
       console.error("Failed to add task:", error);
     }
-  }
+  };
 
-  async function editTask(taskId, updateData) {
-    await updateTask(taskId, updateData);
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, ...updateData } : task
-      )
-    );
-  }
-  async function deleteTask(taskId) {
-    await removeTask(taskId);
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  }
-  async function moveTask(taskId, newStage) {
-    await updateTask(taskId, { status: newStage });
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, status: newStage } : task
-      )
-    );
-  }
+  const editTask = async (taskId, updateData) => {
+    try {
+      await updateTask(taskId, updateData);
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === taskId ? { ...task, ...updateData } : task
+        )
+      );
+    } catch (error) {
+      console.error("Failed to edit task:", error);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      await removeTask(taskId);
+      setTasks((prev) => prev.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
+  };
+
+  const moveTask = async (taskId, newStage) => {
+    try {
+      await updateTask(taskId, { status: newStage });
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === taskId ? { ...task, status: newStage } : task
+        )
+      );
+    } catch (error) {
+      console.error("Failed to move task:", error);
+    }
+  };
+
+  // ------------------ PUBLIC API ------------------
 
   return {
-    //input for TaskBoard.jsx
     tasks,
     stages,
     addTask,
