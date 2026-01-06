@@ -12,6 +12,14 @@ import {
   limit, 
   serverTimestamp 
 } from "firebase/firestore";
+import { getQuote } from "./quoteService.js";
+
+const sendQuote = async (userId) => {
+  if (!userId) return;
+  const quoteData = await getQuote();
+  const message = `"${quoteData.text}" \n— ${quoteData.author}`;
+  await createNotification(userId, message);
+};
 
 const createNotification = async (userId, message) => {
   if (!userId) return;
@@ -64,5 +72,6 @@ export {
   createNotification, 
   listenToNotifications, 
   markAsRead, 
+  sendQuote,
   clearAllNotifications 
 };
