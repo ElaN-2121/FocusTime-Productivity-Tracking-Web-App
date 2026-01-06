@@ -6,12 +6,13 @@ import {
   updateLivePointer,
   listenToTimer,
 } from "../../services/pomodoroTimer";
+import { sendQuote } from "../../services/notificationService";
 import FlipClock from "./FlipClock";
 import Controls from "./Controls";
 import "../../styles/pomodoro.css";
 
 const MODES = {
-  focus: 25 * 60,
+  focus: 25 * 60, 
   short: 5 * 60,
   long: 15 * 60,
 };
@@ -23,13 +24,11 @@ export default function Pomodoro({ onFocusComplete }) {
   const [timeLeft, setTimeLeft] = useState(MODES.focus);
   const [isRunning, setIsRunning] = useState(false);
 
-  // 🔥 Focus Mode (Fullscreen)
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [showExitWarning, setShowExitWarning] = useState(false);
 
   const segmentStartRef = useRef(MODES.focus);
 
-  /* -------------------- LIVE SYNC -------------------- */
   useEffect(() => {
     if (!user) return;
 
@@ -50,7 +49,6 @@ export default function Pomodoro({ onFocusComplete }) {
     return () => unsubscribe();
   }, [user]);
 
-  /* -------------------- LOCAL TICK -------------------- */
   useEffect(() => {
     if (!isRunning) return;
 
@@ -61,14 +59,26 @@ export default function Pomodoro({ onFocusComplete }) {
           handleFinish();
           return 0;
         }
-        return prev - 1;
+
+        const nextTime = prev - 1;
+        
+        if (mode === "focus") {
+          const totalDuration = MODES.focus;
+          const quoteInterval = Math.floor(totalDuration / 5); 
+          const elapsed = totalDuration - nextTime;
+
+          if (elapsed > 0 && elapsed % quoteInterval === 0 && elapsed < totalDuration) {
+            sendQuote(user.uid);
+          }
+        }
+
+        return nextTime;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isRunning]);
+  }, [isRunning, mode, user?.uid]);
 
-  /* -------------------- FOCUS MODE (FULLSCREEN) -------------------- */
   const enterFocusMode = async () => {
     try {
       if (!document.fullscreenElement) {
@@ -76,7 +86,7 @@ export default function Pomodoro({ onFocusComplete }) {
       }
       setIsFocusMode(true);
     } catch (err) {
-      console.error("Fullscreen failed:", err);
+      console.error(err);
     }
   };
 
@@ -91,34 +101,26 @@ export default function Pomodoro({ onFocusComplete }) {
     }
   };
 
-  // Detect ESC / forced exit
   useEffect(() => {
     const handleFullscreenChange = () => {
       if (!document.fullscreenElement) {
         setIsFocusMode(false);
       }
     };
-
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-
-    return () =>
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  /* -------------------- TIMER ACTIONS -------------------- */
   const handleFinish = async () => {
     const duration = segmentStartRef.current;
-
     await recordSessionChunk(user.uid, {
       mode,
       duration,
       status: "completed",
     });
-    // ✅ REPORT TO HOME (ONLY FOCUS MODE)
     if (mode === "focus" && onFocusComplete) {
       onFocusComplete(Math.floor(duration / 60));
     }
-
     await updateLivePointer(user.uid, {
       isRunning: false,
       expiresAt: null,
@@ -129,7 +131,6 @@ export default function Pomodoro({ onFocusComplete }) {
 
   const onStart = () => {
     const expiresAt = new Date(Date.now() + timeLeft * 1000);
-
     updateLivePointer(user.uid, {
       isRunning: true,
       expiresAt,
@@ -141,7 +142,6 @@ export default function Pomodoro({ onFocusComplete }) {
 
   const onPause = async () => {
     const durationSpent = segmentStartRef.current - timeLeft;
-
     if (durationSpent >= 10) {
       await recordSessionChunk(user.uid, {
         mode,
@@ -149,7 +149,6 @@ export default function Pomodoro({ onFocusComplete }) {
         status: "paused",
       });
     }
-
     await updateLivePointer(user.uid, {
       isRunning: false,
       expiresAt: null,
@@ -161,7 +160,6 @@ export default function Pomodoro({ onFocusComplete }) {
 
   const switchMode = async (newMode) => {
     const durationSpent = segmentStartRef.current - timeLeft;
-
     if (durationSpent >= 10) {
       await recordSessionChunk(user.uid, {
         mode,
@@ -169,7 +167,6 @@ export default function Pomodoro({ onFocusComplete }) {
         status: "switched",
       });
     }
-
     await updateLivePointer(user.uid, {
       isRunning: false,
       expiresAt: null,
@@ -179,22 +176,16 @@ export default function Pomodoro({ onFocusComplete }) {
     });
   };
 
-  /* -------------------- UI -------------------- */
   return (
-    <div
-      className={`pomodoro-container ${isFocusMode ? "focus-mode-active" : ""}`}
-    >
+    <div className={`pomodoro-container ${isFocusMode ? "focus-mode-active" : ""}`}>
       <h1>{mode === "focus" ? "Focus Time" : "Break Time"}</h1>
-
       <FlipClock time={timeLeft} />
-
       <Controls
         isRunning={isRunning}
         onStart={onStart}
         onPause={onPause}
         onReset={() => switchMode(mode)}
       />
-
       <div className="mode-buttons">
         {Object.keys(MODES).map((m) => (
           <button
@@ -206,8 +197,6 @@ export default function Pomodoro({ onFocusComplete }) {
           </button>
         ))}
       </div>
-
-      {/* 🔥 Focus Mode Buttons */}
       {mode === "focus" &&
         (!isFocusMode ? (
           <button className="focus-btn" onClick={enterFocusMode}>
@@ -221,8 +210,6 @@ export default function Pomodoro({ onFocusComplete }) {
             Exit Focus Mode
           </button>
         ))}
-
-      {/* 🔔 Exit Warning */}
       {showExitWarning && (
         <ExitWarning
           title="Exit Focus Mode?"
