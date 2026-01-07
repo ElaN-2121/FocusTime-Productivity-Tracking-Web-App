@@ -1,19 +1,15 @@
 // src/features/tasks/TaskCard.jsx
 import "../../styles/pages.css";
 import "../../styles/taskboard.css";
-export default function TaskCard({ task, onEdit, onDelete, onStatusChange, isSaving }) {
-  const isDone = task.status === "done" || task.status === "Done";
-  const statusLabel = (() => {
-    if (task.status === "todo") return "To-Do";
-    if (task.status === "in-progress") return "In Progress";
-    if (task.status === "done") return "Done";
-    return task.status || "To-Do";
-  })();
+
+export default function TaskCard({ task, onEdit, onDelete, onToggleComplete, isSaving }) {
+  // Matches capitalized names used in useTaskBoard and Firestore
+  const isDone = task.status === "Done";
 
   const handleCheckboxClick = (e) => {
-    e.stopPropagation(); // Prevent drag start or other clicks
-    const newStatus = isDone ? "todo" : "done";
-    onStatusChange(task.id, newStatus);
+    e.stopPropagation(); 
+    // This calls the handleToggleComplete function in TaskBoard.jsx
+    onToggleComplete(task.id, task.completed);
   };
 
   return (
@@ -26,7 +22,7 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange, isSav
         <div className="task-status-toggle">
           <input 
             type="checkbox" 
-            checked={isDone} 
+            checked={task.completed || false} 
             onChange={handleCheckboxClick}
             disabled={!!isSaving}
             className="status-checkbox"
@@ -45,7 +41,7 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange, isSav
       
       <div className="task-footer">
         <span>{task.dueDate ? `📅 ${task.dueDate}` : "No deadline"}</span>
-        <span className="status-label">{statusLabel}</span>
+        <span className="status-label">{task.status}</span>
       </div>
     </div>
   );
