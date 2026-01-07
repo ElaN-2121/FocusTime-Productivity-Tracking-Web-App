@@ -12,7 +12,6 @@ import { auth } from './firebase/firebaseConfig';
 
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
-const appleProvider = new OAuthProvider('apple.com');
 
 
 const signUp = (email, password) => {
@@ -41,7 +40,6 @@ const logInExternal = async (providerName) => {
     switch (providerName) {
         case 'google': provider = googleProvider; break;
         case 'facebook': provider = facebookProvider; break;
-        case 'apple': provider = appleProvider; break;
         default: throw new Error("Unsupported provider");
     }
     try {
