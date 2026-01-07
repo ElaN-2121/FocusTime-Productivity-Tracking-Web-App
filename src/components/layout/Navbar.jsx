@@ -1,6 +1,6 @@
 import React from "react";
 import "../../styles/navbar.css";
-import { useProgressAnalytics } from "../../hooks/useProgressAnalytics";
+import useProgressAnalytics from "../../hooks/useProgressAnalytics";
 const Navbar = ({ title = "To-Do" }) => {
   const { data } = useProgressAnalytics();
   const streak = data?.streak || 0;

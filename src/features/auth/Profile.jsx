@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePersonalInfo } from "../../hooks/usePersonalInfo"; // Import your hook
-import { useProgressAnalytics } from "../../hooks/useProgressAnalytics";
+import useProgressAnalytics from "../../hooks/useProgressAnalytics";
 
 import "../../styles/profile.css";
 

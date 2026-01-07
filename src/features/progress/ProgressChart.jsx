@@ -9,7 +9,7 @@ import {
   Cell,
 } from "recharts";
 import { useTaskBoard } from "../../hooks/useTaskBoard"; // Real-time sync source
-import { useProgressAnalytics } from "../../hooks/useProgressAnalytics";
+import useProgressAnalytics from "../../hooks/useProgressAnalytics";
 import { getPetMood, getPetEvolution } from "../../services/gamificationLogic";
 import "../../styles/progress.css";
 
@@ -24,7 +24,8 @@ export default function ProgressChart() {
   const generalTasks = tasks.filter((t) => t.type === "task");
   const completedCount = generalTasks.filter((t) => t.completed).length;
   const totalCount = generalTasks.length;
-  const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const percentage =
+    totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   const taskPieData = [
     { value: completedCount },
@@ -39,7 +40,8 @@ export default function ProgressChart() {
   };
 
   // --- ANALYTICS DATA (XP & PET) ---
-  if (loading || !data) return <div className="loading-state">Loading dashboard...</div>;
+  if (loading || !data)
+    return <div className="loading-state">Loading dashboard...</div>;
   if (error) return <div className="error-state">Error loading analytics</div>;
 
   const petBase = getPetEvolution(data.hoursSpent || 0);
@@ -53,7 +55,6 @@ export default function ProgressChart() {
   return (
     <div className="progress-dashboard">
       <div className="bento-grid">
-        
         {/* 1. FOCUS XP CARD */}
         <div className="card time-spent">
           <div className="card-content">
@@ -87,7 +88,10 @@ export default function ProgressChart() {
               <span className="pet-emoji">{petBase.emoji}</span>
             </div>
             <div className="pet-info">
-              <span className="pet-mood-tag" style={{ backgroundColor: petMood.color }}>
+              <span
+                className="pet-mood-tag"
+                style={{ backgroundColor: petMood.color }}
+              >
                 {petMood.mood}
               </span>
               <h4 className="pet-stage-name">{petBase.stage}</h4>
@@ -100,8 +104,13 @@ export default function ProgressChart() {
           <p className="card-label">Milestones</p>
           <div className="badge-row">
             {(data.achievements || []).map((ach) => (
-              <div key={ach.id} className={`badge-item ${ach.unlocked ? "" : "locked"}`}>
-                <span className="badge-icon" title={ach.title}>{ach.icon}</span>
+              <div
+                key={ach.id}
+                className={`badge-item ${ach.unlocked ? "" : "locked"}`}
+              >
+                <span className="badge-icon" title={ach.title}>
+                  {ach.icon}
+                </span>
               </div>
             ))}
           </div>
@@ -110,9 +119,9 @@ export default function ProgressChart() {
 
         {/* 4. PURPLE TASK CIRCLE (Synchronized) */}
         <div className="card task-completion">
-           <p className="card-label">Task Progress</p>
-           {totalCount > 0 ? (
-             <>
+          <p className="card-label">Task Progress</p>
+          {totalCount > 0 ? (
+            <>
               <ResponsiveContainer width="100%" height={80}>
                 <PieChart>
                   <Pie
@@ -130,12 +139,14 @@ export default function ProgressChart() {
                   </Pie>
                 </PieChart>
               </ResponsiveContainer>
-              <h3 style={{ color: "#8884d8", margin: "5px 0" }}>{percentage}%</h3>
+              <h3 style={{ color: "#8884d8", margin: "5px 0" }}>
+                {percentage}%
+              </h3>
               <p className="tiny-label">Tasks Done</p>
-             </>
-           ) : (
-             <div className="empty-state">No tasks yet</div>
-           )}
+            </>
+          ) : (
+            <div className="empty-state">No tasks yet</div>
+          )}
         </div>
 
         {/* 5. WEEKLY PROGRESS CHART */}
@@ -165,12 +176,16 @@ export default function ProgressChart() {
           <div className="tracker-list">
             {realAssignments.length > 0 ? (
               realAssignments.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="tracker-item" 
+                <div
+                  key={item.id}
+                  className="tracker-item"
                   onClick={() => handleToggle(item.id, item.completed)}
                 >
-                  <div className={`checkbox-mock ${item.completed ? "checked" : ""}`}>
+                  <div
+                    className={`checkbox-mock ${
+                      item.completed ? "checked" : ""
+                    }`}
+                  >
                     {item.completed && "✓"}
                   </div>
                   <span className={item.completed ? "strikethrough" : ""}>
@@ -183,9 +198,7 @@ export default function ProgressChart() {
             )}
           </div>
         </div>
-
       </div>
     </div>
   );
-  
 }

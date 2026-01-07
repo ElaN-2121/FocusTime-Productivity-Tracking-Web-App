@@ -59,9 +59,6 @@ export const useProgressAnalytics = () => {
                 ? progressData.dailyGoal
                 : 8;
 
-            analyticsData.streak =
-              typeof progressData.streak === "number" ? progressData.streak : 0;
-
             analyticsData.assignments = Array.isArray(progressData.assignments)
               ? progressData.assignments
               : [];
