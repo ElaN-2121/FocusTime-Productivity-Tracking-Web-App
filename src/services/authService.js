@@ -5,6 +5,7 @@ import {
     signInWithPopup,
     signInWithRedirect,
     sendPasswordResetEmail,
+    sendEmailVerification,
     GoogleAuthProvider,
     FacebookAuthProvider,
     onAuthStateChanged
@@ -17,6 +18,11 @@ const facebookProvider = new FacebookAuthProvider();
 const signUp = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password)
         .then(credential => credential.user)
+        .catch(error => { throw error; });
+}
+
+const verifyEmail = (user) => {
+    return sendEmailVerification(user)
         .catch(error => { throw error; });
 }
 
@@ -43,13 +49,11 @@ const whileLogIn = (callback) => {
 
 const logInExternal = async (providerName) => {
     let provider;
-
     switch (providerName) {
         case 'google': provider = googleProvider; break;
         case 'facebook': provider = facebookProvider; break;
         default: throw new Error("Unsupported provider");
     }
-
     try {
         const result = await signInWithPopup(auth, provider);
         return result.user;
@@ -61,4 +65,4 @@ const logInExternal = async (providerName) => {
     }
 };
 
-export { signUp, logIn, logOut, logInExternal, whileLogIn, resetPassword }
+export { signUp, logIn, logOut, logInExternal, whileLogIn, resetPassword, verifyEmail }
