@@ -30,10 +30,10 @@ export default function Sidebar({ onNavigate, currentView, theme, setTheme }) {
             <NavItem id="pomodoro" icon="⏱️" label="Focus Session" active={currentView === "pomodoro"} onClick={onNavigate} />
             <NavItem id="tasks" icon="✅" label="Todo" active={currentView === "tasks"} onClick={onNavigate} />
             <NavItem id="focuspad" icon="📝" label="FocusPad" active={currentView === "focuspad"} onClick={onNavigate} />
-            <NavItem id="youtube" icon="📺" label="YouTube" onClick={onNavigate} />
+            <NavItem id="youtube" icon="📺" label="YouTube" active={currentView === "youtube"} onClick={onNavigate} />
             <NavItem id="progress" icon="📊" label="Progress" active={currentView === "progress"} onClick={onNavigate} />
             <NavItem id="profile" icon="👤" label="Profile" active={currentView === "profile"} onClick={onNavigate} />
-            <NavItem id="mentora" icon="🎓" label="Mentora" onClick={onNavigate} />
+            <NavItem id="mentora" icon="🎓" label="Mentora" active={currentView === "mentora"} onClick={onNavigate} />
           </nav>
         </div>
 
