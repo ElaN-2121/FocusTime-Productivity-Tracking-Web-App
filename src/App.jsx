@@ -22,6 +22,9 @@ export default function App() {
   const [notifications, setNotifications] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [activeNote, setActiveNote] = useState(null);
+  const [mentoraMessages, setMentoraMessages] = useState([
+    { role: "assistant", content: "### Welcome! \n\nHi there! I'm **Mentora**. I'm so happy to help you find your focus today. What's on your mind?" }
+  ]);
   const prevNotifsRef = useRef([]);
 
   useEffect(() => {
@@ -101,10 +104,14 @@ export default function App() {
           {currentView === "profile" && <Profile />}
           {currentView === "pomodoro" && <Pomodoro onFocusComplete={() => {}} />}
           {currentView === "progress" && <ProgressChart />}
-          
-          {/* Routes */}
           {currentView === "focuspad" && <FocusPad userId={user.uid} />}
-          {currentView === "mentora" && <Mentora userId={user.uid} />}
+          {currentView === "mentora" && (
+            <Mentora 
+              userId={user.uid} 
+              messages={mentoraMessages} 
+              setMessages={setMentoraMessages} 
+            />
+          )}
           {currentView === "youtube" && <YouTubeFocus />}
         </div>
       </div>
@@ -129,10 +136,10 @@ const styles = {
   },
   popupCard: {
     pointerEvents: "auto",
-    backgroundColor: "var(--fp-sidebar-bg)", // Link to sidebar color
+    backgroundColor: "var(--fp-sidebar-bg)",
     backdropFilter: "blur(12px)",
-    border: "1px solid var(--fp-border)",   // Link to border color
-    color: "var(--fp-text-main)",           // Link to text color
+    border: "1px solid var(--fp-border)",
+    color: "var(--fp-text-main)",
     padding: "16px",
     borderRadius: "12px",
     boxShadow: "0 10px 25px rgba(0,0,0,0.3)",

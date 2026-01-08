@@ -1,125 +1,146 @@
-/* 1. THEME MAPPING */
 .mentora-page {
-  --mt-bg: var(--background);
-  --mt-surface: var(--surface);
-  --mt-primary: var(--primary);
-  --mt-text: var(--text-main);
-  --mt-muted: var(--text-muted);
-  --mt-border: var(--border);
+  --mt-bg: var(--fp-bg);
+  --mt-surface: var(--fp-sidebar-bg);
+  --mt-primary: var(--fp-baby-blue);
+  --mt-text: var(--fp-text-main);
+  --mt-border: var(--fp-border);
+  --mt-canvas: var(--fp-canvas-bg);
   
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px); /* Subtracting navbar height */
+  height: calc(100vh - 64px);
   background: var(--mt-bg);
-  transition: background 0.3s ease;
+  padding: 15px;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .mentora-page {
+  --mt-bg: #0f172a;
+  --mt-surface: #1e293b;
+  --mt-border: #334155;
+  --mt-canvas: #020617;
+  --mt-text: #f8fafc;
 }
 
 .mentora-chat-container {
-  max-width: 800px;
-  height:100%;
+  max-width: 850px;
+  height: 100%;
   width: 100%;
-  margin: 20px auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: var(--mt-surface);
-  border-left: 1px solid var(--mt-border);
-  border-right: 1px solid var(--mt-border);
-  border-radius: 15px;
+  background: var(--mt-bg);
+  border: 1px solid var(--mt-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-/* 2. CHAT HEADER */
 .mentora-header {
-  padding: 20px 30px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--mt-border);
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
+  background: var(--mt-surface);
 }
 
 .mentora-header h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.1rem;
   margin: 0;
   color: var(--mt-text);
 }
 
 .status-indicator {
-  width: 10px;
-  height: 10px;
-  background: #22c55e; /* Online Green */
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
 }
 
-/* 3. MESSAGES AREA */
 .mentora-chat-window {
   flex: 1;
   overflow-y: auto;
-  padding: 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  scroll-behavior: smooth;
+  gap: 16px;
+  background: var(--mt-canvas);
 }
 
 .chat-bubble-wrapper {
   display: flex;
   width: 100%;
-  animation: messageFadeIn 0.3s ease forwards;
-}
-
-@keyframes messageFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .chat-bubble-wrapper.user { justify-content: flex-end; }
 .chat-bubble-wrapper.assistant { justify-content: flex-start; }
 
 .chat-bubble {
-  padding: 14px 20px;
-  border-radius: 20px;
-  max-width: 75%;
-  font-size: 1rem;
-  line-height: 1.6;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 10px 16px;
+  border-radius: 14px;
+  max-width: 85%;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  overflow-wrap: break-word;
 }
 
 .chat-bubble.user {
   background: var(--mt-primary);
-  color: white;
+  color: #ffffff;
   border-bottom-right-radius: 4px;
 }
 
+[data-theme="dark"] .chat-bubble.user {
+  color: #0f172a;
+}
+
 .chat-bubble.assistant {
-  background: var(--mt-bg);
+  background: var(--mt-surface);
   color: var(--mt-text);
   border: 1px solid var(--mt-border);
   border-bottom-left-radius: 4px;
 }
 
-/* 4. INPUT AREA */
+/* Reduced spacing for Markdown elements */
+.chat-bubble.assistant h3 {
+  font-size: 1.05rem;
+  margin: 4px 0 8px 0;
+  color: var(--mt-primary);
+}
+
+.chat-bubble.assistant p {
+  margin: 0 0 8px 0;
+}
+
+.chat-bubble.assistant p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-bubble.assistant ul, 
+.chat-bubble.assistant ol {
+  padding-left: 1.2rem;
+  margin: 8px 0;
+}
+
+.chat-bubble.assistant li {
+  margin-bottom: 4px;
+}
+
 .mentora-input-wrapper {
-  padding: 25px 30px;
-  background: var(--mt-surface);
+  padding: 15px 20px;
+  background: var(--mt-bg);
   border-top: 1px solid var(--mt-border);
 }
 
 .mentora-input-bar {
   display: flex;
-  gap: 12px;
-  background: var(--mt-bg);
-  padding: 8px 8px 8px 20px;
-  border-radius: 50px;
+  gap: 10px;
+  background: var(--mt-canvas);
+  padding: 4px 4px 4px 16px;
+  border-radius: 25px;
   border: 1px solid var(--mt-border);
   align-items: center;
-  transition: all 0.2s;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-}
-
-.mentora-input-bar:focus-within {
-  border-color: var(--mt-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .mentora-input-bar input {
@@ -128,36 +149,19 @@
   border: none;
   outline: none;
   color: var(--mt-text);
-  font-size: 1rem;
+  padding: 6px 0;
+  font-size: 0.95rem;
 }
 
 .btn-send {
   background: var(--mt-primary);
-  color: white;
+  color: #ffffff;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.btn-send:hover {
-  transform: scale(1.05);
-}
-
-/* 5. RESPONSIVENESS */
-@media (max-width: 768px) {
-  .mentora-chat-container {
-    border: none;
-  }
-  .mentora-chat-window {
-    padding: 20px 15px;
-  }
-  .chat-bubble {
-    max-width: 85%;
-  }
 }

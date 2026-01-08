@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { summarizeNoteAI } from "../../services/noteService"; 
+import ReactMarkdown from "react-markdown";
+import { askMentora } from "../../services/mentoraService.js"; 
 import "../../styles/mentora.css";
 
-export default function Mentora() {
-  const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi! I'm Mentora. How can I help you reach your focus goals today?" }
-  ]);
+export default function Mentora({ messages, setMessages, userId }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -18,15 +16,20 @@ export default function Mentora() {
     if (!input.trim() || loading) return;
 
     const userMsg = { role: "user", content: input };
-    setMessages(prev => [...prev, userMsg]);
+    const updatedHistory = [...messages, userMsg];
+    
+    setMessages(updatedHistory);
     setInput("");
     setLoading(true);
 
     try {
-      const aiResponse = await summarizeNoteAI(input); 
-      setMessages(prev => [...prev, { role: "assistant", content: aiResponse }]);
+      const response = await askMentora(updatedHistory);
+      setMessages(prev => [...prev, { role: "assistant", content: response }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting right now." }]);
+      setMessages(prev => [...prev, { 
+        role: "assistant", 
+        content: "I'm so sorry, I'm having a little trouble connecting. Let's try again in a moment!" 
+      }]);
     } finally {
       setLoading(false);
     }
@@ -35,25 +38,27 @@ export default function Mentora() {
   return (
     <div className="mentora-page">
       <div className="mentora-chat-container">
-        
-        {/* NEW: Chat Header */}
         <header className="mentora-header">
           <div className="status-indicator"></div>
-          <h2>Mentora AI Guide</h2>
+          <h2>Mentora</h2>
         </header>
 
         <div className="mentora-chat-window">
           {messages.map((m, i) => (
             <div key={i} className={`chat-bubble-wrapper ${m.role}`}>
               <div className={`chat-bubble ${m.role}`}>
-                {m.content}
+                {m.role === "assistant" ? (
+                  <ReactMarkdown>{m.content}</ReactMarkdown>
+                ) : (
+                  m.content
+                )}
               </div>
             </div>
           ))}
           {loading && (
             <div className="chat-bubble-wrapper assistant">
               <div className="chat-bubble assistant">
-                <span className="typing-loader">Thinking...</span>
+                <span className="typing-loader">Mentora is thinking...</span>
               </div>
             </div>
           )}
@@ -66,12 +71,9 @@ export default function Mentora() {
               value={input} 
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Type your message here..."
+              placeholder="Tell Mentora what's on your mind..."
             />
-            {/* NEW: Round Send Button */}
-            <button onClick={handleSend} className="btn-send" title="Send Message">
-               ➔
-            </button>
+            <button onClick={handleSend} className="btn-send">➔</button>
           </div>
         </div>
       </div>
