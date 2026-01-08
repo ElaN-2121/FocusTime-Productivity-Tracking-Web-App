@@ -1,31 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { usePersonalInfo } from "../../hooks/usePersonalInfo";
 import { useProgressAnalytics } from "../../hooks/useProgressAnalytics";
-import { auth } from "../../services/firebase/firebaseConfig";
-
+import { AuthContext } from "../../context/AuthContext";
+import { createNotification } from "../../services/notificationService";
 import "../../styles/profile.css";
+import "../../styles/buttons.css";
 
 const Profile = () => {
-  const { personalInfo, loading, updateInfo } = usePersonalInfo();
-  const { data } = useProgressAnalytics();
-  const fileInputRef = useRef(null);
+  const { user } = useContext(AuthContext);
+  const { personalInfo, loading: infoLoading, updateInfo } = usePersonalInfo();
+  const { data, loading: analyticsLoading } = useProgressAnalytics();
 
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    email: "",
     phone: "",
     bestStudyTime: "Morning",
-    photoURL: ""
   });
 
-  // Syncs the local form with the database whenever the database updates
   useEffect(() => {
-    if (personalInfo && Object.keys(personalInfo).length > 0) {
-      setFormData((prev) => ({
-        ...prev,
-        ...personalInfo
-      }));
+    if (personalInfo) {
+      setFormData({
+        firstName: personalInfo.firstName || "",
+        lastName: personalInfo.lastName || "",
+        phone: personalInfo.phone || "",
+        bestStudyTime: personalInfo.bestStudyTime || "Morning",
+      });
     }
   }, [personalInfo]);
 
@@ -34,80 +35,64 @@ const Profile = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 800000) {
-      alert("Image is too large. Please select a photo under 800KB.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-
-      try {
-        setFormData((prev) => ({ ...prev, photoURL: base64String }));
-        // Saves the image string directly to Firestore
-        await updateInfo({ ...formData, photoURL: base64String });
-        alert("Avatar updated!");
-      } catch (error) {
-        console.error("Save Error:", error);
-        alert("Failed to save avatar.");
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     try {
       await updateInfo(formData);
-      alert("Profile Updated!");
+      setIsEditing(false);
+
+      await createNotification(
+        user.uid,
+        "Profile updated successfully! Your changes are now live. ✨"
+      );
+
     } catch (error) {
-      alert("Failed to save profile.");
+      await createNotification(
+        user.uid,
+        "Failed to save profile changes");
+
     }
   };
 
-  if (loading) return <div className="dashboard-layout">Loading Profile...</div>;
+  const toggleEdit = () => {
+    if (isEditing) {
+      if (personalInfo) {
+        setFormData({
+          firstName: personalInfo.firstName || "",
+          lastName: personalInfo.lastName || "",
+          phone: personalInfo.phone || "",
+          bestStudyTime: personalInfo.bestStudyTime || "Morning",
+        });
+      }
+    }
+    setIsEditing(!isEditing);
+  };
+
+  if (infoLoading || analyticsLoading) {
+    return <div className="dashboard-layout">Loading Profile...</div>;
+  }
 
   return (
     <div className="profile-container">
       <div className="profile-grid">
-        {/* Left Column: Avatar & Summary */}
         <aside className="profile-card">
           <div className="avatar-section">
-            <div className="avatar-circle">
-              {formData.photoURL ? (
-                <img src={formData.photoURL} alt="Avatar" className="avatar-img" />
-              ) : (
-                "👤"
-              )}
-            </div>
-            {/* Dynamic Name and Handle */}
+            <div className="avatar-circle">👤</div>
             <h3 style={{ margin: "10px 0 5px" }}>
-              {formData.firstName || "User"} {formData.lastName || ""}
+              {personalInfo?.firstName} {personalInfo?.lastName || "User"}
             </h3>
-            <p style={{ color: "var(--text-muted)" }}>
-              @{formData.email ? formData.email.split('@')[0] : (formData.firstName?.toLowerCase() || "user_handle")}
+            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+              {personalInfo?.email}
             </p>
           </div>
 
           <div className="side-list">
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              style={{ display: "none" }} 
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-            <button 
-              className="btn btn-primary" 
+            <button
+              className={`btn ${isEditing ? "btn-secondary" : "btn-primary"}`}
               style={{ width: "100%" }}
-              onClick={() => fileInputRef.current.click()}
+              onClick={toggleEdit}
             >
-              Edit Avatar
+              {isEditing ? "Cancel Editing" : "Edit Profile"}
             </button>
             <div className="streak-badge">
               <span>Daily Streak</span>
@@ -116,7 +101,6 @@ const Profile = () => {
           </div>
         </aside>
 
-        {/* Right Column: Edit Form */}
         <main className="profile-card">
           <h3 style={{ marginBottom: "25px" }}>Personal Information</h3>
 
@@ -128,8 +112,10 @@ const Profile = () => {
                   type="text"
                   name="firstName"
                   className="profile-input"
-                  value={formData?.firstName || ""}
+                  value={formData.firstName}
                   onChange={handleInputChange}
+                  disabled={!isEditing}
+                  placeholder="First Name"
                 />
               </div>
               <div>
@@ -138,21 +124,12 @@ const Profile = () => {
                   type="text"
                   name="lastName"
                   className="profile-input"
-                  value={formData?.lastName || ""}
+                  value={formData.lastName}
                   onChange={handleInputChange}
+                  disabled={!isEditing}
+                  placeholder="Last Name"
                 />
               </div>
-            </div>
-
-            <div className="profile-form-group">
-              <label className="profile-label">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                className="profile-input"
-                value={formData?.email || ""}
-                onChange={handleInputChange}
-              />
             </div>
 
             <div className="profile-form-group">
@@ -161,8 +138,10 @@ const Profile = () => {
                 type="tel"
                 name="phone"
                 className="profile-input"
-                value={formData?.phone || ""}
+                value={formData.phone}
                 onChange={handleInputChange}
+                disabled={!isEditing}
+                placeholder="Not set"
               />
             </div>
 
@@ -171,8 +150,9 @@ const Profile = () => {
               <select
                 name="bestStudyTime"
                 className="profile-select"
-                value={formData?.bestStudyTime || "Morning"}
+                value={formData.bestStudyTime}
                 onChange={handleInputChange}
+                disabled={!isEditing}
               >
                 <option value="Morning">Morning</option>
                 <option value="Afternoon">Afternoon</option>
@@ -180,20 +160,20 @@ const Profile = () => {
               </select>
             </div>
 
-            <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "30px" }}>
-              {/* FIXED CANCEL BUTTON: Reverts to original database state */}
-              <button
-                type="button"
-                className="btn"
-                style={{ border: "1px solid var(--border)" }}
-                onClick={() => setFormData(personalInfo)} 
+            {isEditing && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  justifyContent: "flex-end",
+                  marginTop: "30px",
+                }}
               >
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Save Changes
-              </button>
-            </div>
+                <button type="submit" className="btn btn-primary">
+                  Save Changes
+                </button>
+              </div>
+            )}
           </form>
         </main>
       </div>

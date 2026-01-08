@@ -2,12 +2,13 @@
 :root {
   /* Light Mode Colors (Default) */
   --fp-bg: #ffffff;
+  --fp-canvas-bg: #f8f9fa;
   --fp-sidebar-bg: #fbfbfa;
   --fp-border: #ececed;
   --fp-text-main: #37352f;
   --fp-text-sub: #888888;
-  --fp-baby-blue: #a2d2ff;
-  --fp-baby-blue-hover: #539ee4;
+  --fp-baby-blue: #3b82f6;
+  --fp-baby-blue-hover: #2563eb;
   --fp-active-item: #ebf5ff;
   --fp-ai-bg: #f0f7ff;
   --fp-ai-text: #2c5282;
@@ -15,32 +16,40 @@
 }
 
 body[data-theme="dark"] .focuspad-root {
-  --fp-bg: #191919;
-  --fp-sidebar-bg: #202020;
-  --fp-border: #2f2f2f;
-  --fp-text-main: #dcdcdc;
-  --fp-text-sub: #999999;
-  --fp-baby-blue: #7fb5ff; 
-  --fp-baby-blue-hover: #b8ddff;
-  --fp-active-item: #2d3748;
-  --fp-ai-bg: #1a202c;
-  --fp-ai-text: #a3bfdf;
-  --fp-input-bg: #252525;
+  /* Mixing the original dark logic with the new Writer Blue colors */
+  --fp-bg: #0f172a;           /* Deep Navy Outer */
+  --fp-canvas-bg: #1e293b;    /* Lighter Slate "Paper" */
+  --fp-sidebar-bg: #0b1120;   /* Darker Sidebar */
+  --fp-border: rgba(255, 255, 255, 0.08);
+  --fp-text-main: #f1f5f9;
+  --fp-text-sub: #94a3b8;
+  --fp-baby-blue: #60a5fa; 
+  --fp-baby-blue-hover: #93c5fd;
+  --fp-active-item: rgba(96, 165, 250, 0.15);
+  --fp-ai-bg: rgba(139, 92, 246, 0.1);
+  --fp-ai-text: #c4b5fd;
+  --fp-input-bg: #0f172a;
 }
 
-/* 2. BASE LAYOUT */
+/* 2. BASE LAYOUT - Added the Bevel/Float effect here */
 .focuspad-root {
   display: flex;
-  height: calc(100vh - 64px); /* Adjust based on your navbar height */
+  height: calc(100vh - 80px); 
   background: var(--fp-bg);
   color: var(--fp-text-main);
   font-family: "Inter", -apple-system, sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
+  
+  /* The "Bevel" / Floating Card Look */
+  margin: 15px;
+  border-radius: 16px;
+  border: 1px solid var(--fp-border);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden; 
 }
 
 /* 3. SIDEBAR */
 .fp-sidebar {
-  margin-left: 20px;
   width: 280px;
   background: var(--fp-sidebar-bg);
   border-right: 1px solid var(--fp-border);
@@ -68,11 +77,11 @@ body[data-theme="dark"] .focuspad-root {
 .fp-btn-new {
   width: 100%;
   background: var(--fp-baby-blue);
-  color: white;
+  color: #0f172a; /* Darker text for readability */
   border: none;
   padding: 10px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -136,6 +145,7 @@ body[data-theme="dark"] .focuspad-root {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: var(--fp-canvas-bg); /* Use lighter writing area color */
 }
 
 .fp-editor-nav {
@@ -177,7 +187,7 @@ body[data-theme="dark"] .focuspad-root {
 
 .fp-btn-ai {
   background: var(--fp-ai-bg);
-  color: var(--fp-baby-blue);
+  color: var(--fp-ai-text);
   border: 1px solid var(--fp-baby-blue);
   padding: 6px 15px;
   border-radius: 20px;
@@ -186,15 +196,15 @@ body[data-theme="dark"] .focuspad-root {
 }
 .fp-btn-ai:hover {
   background: var(--fp-baby-blue);
-  color: white;
+  color: #0f172a;
 }
 .fp-btn-save {
   background: var(--fp-baby-blue);
-  color: white;
+  color: #0f172a;
   border: none;
   padding: 6px 20px;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
 }
 
