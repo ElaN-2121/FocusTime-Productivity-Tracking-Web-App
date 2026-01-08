@@ -3,10 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { askMentora } from "../../services/mentoraService.js"; 
 import "../../styles/mentora.css";
 
-export default function Mentora() {
-  const [messages, setMessages] = useState([
-    { role: "assistant", content: "### Welcome! \n\nHi there! I'm **Mentora**. I'm so happy to help you find your focus today. What's on your mind?" }
-  ]);
+export default function Mentora({ messages, setMessages, userId }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
