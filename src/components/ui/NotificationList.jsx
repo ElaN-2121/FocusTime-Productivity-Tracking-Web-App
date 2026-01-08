@@ -6,15 +6,15 @@ const NotificationItem = ({ note, userId }) => {
 
   const currentItemStyle = {
     ...styles.item,
-    backgroundColor: isRead ? "#f3f4f6" : "#eff6ff",
-    borderLeft: isRead ? "4px solid #9ca3af" : "4px solid #3b82f6",
-    filter: isRead ? "grayscale(100%)" : "none",
-    opacity: isRead ? 0.7 : 1
+    backgroundColor: isRead ? "rgba(var(--fp-text-main-rgb, 255, 255, 255), 0.03)" : "var(--fp-active-item)",
+    borderLeft: isRead ? "4px solid var(--fp-text-sub)" : "4px solid var(--fp-baby-blue)",
+    opacity: isRead ? 0.6 : 1,
+    borderColor: "var(--fp-border)"
   };
 
   const currentTextStyle = {
     ...styles.text,
-    color: isRead ? "#6b7280" : "#1e293b",
+    color: "var(--fp-text-main)",
     textDecoration: isRead ? "line-through" : "none"
   };
 
@@ -63,14 +63,41 @@ export default function NotificationList({ userId, notifications }) {
 }
 
 const styles = {
-  wrapper: { background: "white", padding: "20px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.08)", marginTop: "20px" },
+  wrapper: { 
+    background: "var(--fp-sidebar-bg)", 
+    backdropFilter: "blur(10px)",
+    padding: "20px", 
+    borderRadius: "16px", 
+    border: "1px solid var(--fp-border)",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)", 
+    marginTop: "20px" 
+  },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" },
-  title: { fontSize: "1.1rem", fontWeight: "700", color: "#111827", margin: 0 },
-  clearAllBtn: { background: "none", border: "none", color: "#ef4444", fontSize: "0.8rem", cursor: "pointer", textDecoration: "underline" },
-  listContainer: { maxHeight: "350px", overflowY: "auto", paddingRight: "4px" },
-  item: { padding: "12px", borderRadius: "8px", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "8px", border: "1px solid #e5e7eb", transition: "all 0.3s ease" },
-  text: { fontSize: "0.9rem" },
+  title: { fontSize: "1.1rem", fontWeight: "700", color: "var(--fp-text-main)", margin: 0 },
+  clearAllBtn: { background: "none", border: "none", color: "#f87171", fontSize: "0.8rem", cursor: "pointer", fontWeight: "600" },
+  listContainer: { maxHeight: "350px", overflowY: "auto", paddingRight: "8px" },
+  item: { 
+    padding: "14px", 
+    borderRadius: "10px", 
+    marginBottom: "10px", 
+    display: "flex", 
+    flexDirection: "column", 
+    gap: "8px", 
+    border: "1px solid var(--fp-border)", 
+    transition: "all 0.2s ease" 
+  },
+  text: { fontSize: "0.9rem", lineHeight: "1.4" },
   actionRow: { display: "flex", alignItems: "center" },
-  readBtn: { padding: "4px 10px", borderRadius: "4px", fontSize: "0.75rem", fontWeight: "600", cursor: "pointer", border: "none", backgroundColor: "#3b82f6", color: "white" },
-  emptyState: { textAlign: "center", color: "#9ca3af", fontSize: "0.9rem", padding: "20px 0" }
+  readBtn: { 
+    padding: "5px 12px", 
+    borderRadius: "6px", 
+    fontSize: "0.75rem", 
+    fontWeight: "600", 
+    cursor: "pointer", 
+    border: "none", 
+    backgroundColor: "var(--fp-baby-blue)", 
+    color: "#ffffff",
+    transition: "background 0.2s"
+  },
+  emptyState: { textAlign: "center", color: "var(--fp-text-sub)", fontSize: "0.9rem", padding: "30px 0" }
 };

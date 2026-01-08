@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { usePersonalInfo } from "../../hooks/usePersonalInfo";
 import { useProgressAnalytics } from "../../hooks/useProgressAnalytics";
+import { AuthContext } from "../../context/AuthContext";
+import { createNotification } from "../../services/notificationService";
 import "../../styles/profile.css";
 import "../../styles/buttons.css";
 
 const Profile = () => {
+  const { user } = useContext(AuthContext);
   const { personalInfo, loading: infoLoading, updateInfo } = usePersonalInfo();
   const { data, loading: analyticsLoading } = useProgressAnalytics();
 
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,7 +19,6 @@ const Profile = () => {
     bestStudyTime: "Morning",
   });
 
-  // Load data into form, excluding email to keep it read-only
   useEffect(() => {
     if (personalInfo) {
       setFormData({
@@ -36,10 +39,33 @@ const Profile = () => {
     e.preventDefault();
     try {
       await updateInfo(formData);
-      alert("Profile updated successfully!");
+      setIsEditing(false);
+
+      await createNotification(
+        user.uid,
+        "Profile updated successfully! Your changes are now live. ✨"
+      );
+
     } catch (error) {
-      alert("Failed to save profile changes.");
+      await createNotification(
+        user.uid,
+        "Failed to save profile changes");
+
     }
+  };
+
+  const toggleEdit = () => {
+    if (isEditing) {
+      if (personalInfo) {
+        setFormData({
+          firstName: personalInfo.firstName || "",
+          lastName: personalInfo.lastName || "",
+          phone: personalInfo.phone || "",
+          bestStudyTime: personalInfo.bestStudyTime || "Morning",
+        });
+      }
+    }
+    setIsEditing(!isEditing);
   };
 
   if (infoLoading || analyticsLoading) {
@@ -49,22 +75,24 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-grid">
-        {/* Left Column: Original Avatar & Summary Style */}
         <aside className="profile-card">
           <div className="avatar-section">
             <div className="avatar-circle">👤</div>
             <h3 style={{ margin: "10px 0 5px" }}>
               {personalInfo?.firstName} {personalInfo?.lastName || "User"}
             </h3>
-            {/* Display email as static text only */}
             <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
               {personalInfo?.email}
             </p>
           </div>
 
           <div className="side-list">
-            <button className="btn btn-primary" style={{ width: "100%" }}>
-              Edit Avatar
+            <button
+              className={`btn ${isEditing ? "btn-secondary" : "btn-primary"}`}
+              style={{ width: "100%" }}
+              onClick={toggleEdit}
+            >
+              {isEditing ? "Cancel Editing" : "Edit Profile"}
             </button>
             <div className="streak-badge">
               <span>Daily Streak</span>
@@ -73,7 +101,6 @@ const Profile = () => {
           </div>
         </aside>
 
-        {/* Right Column: Original Form Style (No Email Input) */}
         <main className="profile-card">
           <h3 style={{ marginBottom: "25px" }}>Personal Information</h3>
 
@@ -87,6 +114,7 @@ const Profile = () => {
                   className="profile-input"
                   value={formData.firstName}
                   onChange={handleInputChange}
+                  disabled={!isEditing}
                   placeholder="First Name"
                 />
               </div>
@@ -98,6 +126,7 @@ const Profile = () => {
                   className="profile-input"
                   value={formData.lastName}
                   onChange={handleInputChange}
+                  disabled={!isEditing}
                   placeholder="Last Name"
                 />
               </div>
@@ -111,6 +140,7 @@ const Profile = () => {
                 className="profile-input"
                 value={formData.phone}
                 onChange={handleInputChange}
+                disabled={!isEditing}
                 placeholder="Not set"
               />
             </div>
@@ -122,6 +152,7 @@ const Profile = () => {
                 className="profile-select"
                 value={formData.bestStudyTime}
                 onChange={handleInputChange}
+                disabled={!isEditing}
               >
                 <option value="Morning">Morning</option>
                 <option value="Afternoon">Afternoon</option>
@@ -129,26 +160,20 @@ const Profile = () => {
               </select>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                justifyContent: "flex-end",
-                marginTop: "30px",
-              }}
-            >
-              <button
-                type="button"
-                className="btn"
-                style={{ border: "1px solid var(--border)" }}
-                onClick={() => window.location.reload()}
+            {isEditing && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  justifyContent: "flex-end",
+                  marginTop: "30px",
+                }}
               >
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Save Changes
-              </button>
-            </div>
+                <button type="submit" className="btn btn-primary">
+                  Save Changes
+                </button>
+              </div>
+            )}
           </form>
         </main>
       </div>
