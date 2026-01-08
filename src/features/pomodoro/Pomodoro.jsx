@@ -19,9 +19,9 @@ const MODES = {
 
 export default function Pomodoro({ onFocusComplete }) {
   const { user } = useContext(AuthContext);
-
+  const [durations, setDurations] = useState(MODES);
   const [mode, setMode] = useState("focus");
-  const [timeLeft, setTimeLeft] = useState(MODES.focus);
+  const [timeLeft, setTimeLeft] = useState(durations.focus);
   const [isRunning, setIsRunning] = useState(false);
 
   const [isFocusMode, setIsFocusMode] = useState(false);
@@ -61,13 +61,17 @@ export default function Pomodoro({ onFocusComplete }) {
         }
 
         const nextTime = prev - 1;
-        
+
         if (mode === "focus") {
           const totalDuration = MODES.focus;
-          const quoteInterval = Math.floor(totalDuration / 5); 
+          const quoteInterval = Math.floor(totalDuration / 5);
           const elapsed = totalDuration - nextTime;
 
-          if (elapsed > 0 && elapsed % quoteInterval === 0 && elapsed < totalDuration) {
+          if (
+            elapsed > 0 &&
+            elapsed % quoteInterval === 0 &&
+            elapsed < totalDuration
+          ) {
             sendQuote(user.uid);
           }
         }
@@ -108,7 +112,8 @@ export default function Pomodoro({ onFocusComplete }) {
       }
     };
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
   const handleFinish = async () => {
@@ -170,16 +175,45 @@ export default function Pomodoro({ onFocusComplete }) {
     await updateLivePointer(user.uid, {
       isRunning: false,
       expiresAt: null,
-      timeLeftAtPause: MODES[newMode],
-      segmentStartValue: MODES[newMode],
+      timeLeftAtPause: durations[newMode],
+      segmentStartValue: durations[newMode],
       mode: newMode,
     });
   };
+  const adjustTimer = async (amount) => {
+    const newDuration = Math.max(60, durations[mode] + amount);
+    const newTime = Math.max(60, timeLeft + amount);
+
+    setDurations((prev) => ({ ...prev, [mode]: newDuration }));
+    setTimeLeft(newTime);
+    segmentStartRef.current = Math.max(60, segmentStartRef.current + amount);
+
+    if (user) {
+      if (isRunning) {
+        const expiresAt = new Date(Date.now() + newTime * 1000);
+        await updateLivePointer(user.uid, {
+          expiresAt,
+          segmentStartValue: segmentStartRef.current,
+        });
+      } else {
+        await updateLivePointer(user.uid, {
+          timeLeftAtPause: newTime,
+          segmentStartValue: segmentStartRef.current,
+        });
+      }
+    }
+  };
 
   return (
-    <div className={`pomodoro-container ${isFocusMode ? "focus-mode-active" : ""}`}>
+    <div
+      className={`pomodoro-container ${isFocusMode ? "focus-mode-active" : ""}`}
+    >
       <h1>{mode === "focus" ? "Focus Time" : "Break Time"}</h1>
-      <FlipClock time={timeLeft} />
+      <FlipClock
+        time={timeLeft}
+        onIncrease={() => adjustTimer(300)}
+        onDecrease={() => adjustTimer(-60)}
+      />
       <Controls
         isRunning={isRunning}
         onStart={onStart}
