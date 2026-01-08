@@ -64,9 +64,8 @@
 }
 
 .primary {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  padding: 12px 24px;
+  border-radius: 20px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--primary);
@@ -77,6 +76,11 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: var(--shadow);
+}
+.primary:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.1);
 }
 
 .control-btn:hover {
@@ -147,6 +151,42 @@
   box-shadow: var(--shadow);
   z-index: 10;
 }
+.adjust-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 1vw;
+  justify-content: center;
+}
+
+.adjust-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.adjust-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: scale(1.1);
+}
+
+.adjust-btn:active {
+  transform: scale(0.95);
+}
 
 /* Mobile Fix */
 @media (max-width: 767px) {
@@ -162,5 +202,10 @@
 
   .flip-number {
     font-size: 4.5rem;
+  }
+  .adjust-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
   }
 }
