@@ -183,3 +183,126 @@
     order: -1; /* Image first on mobile */
   }
 }
+
+/* RESPONSIVE ADD-ONS (HOME PAGE)*/
+
+/* ---------- Large tablets & small laptops ---------- */
+@media (max-width: 1200px) {
+  .home-container {
+    padding: 50px 24px;
+  }
+
+  .home-grid {
+    gap: 32px;
+  }
+}
+
+/* ---------- Tablets ---------- */
+@media (max-width: 992px) {
+  .home-container {
+    padding: 40px 20px;
+  }
+
+  .home-title {
+    font-size: 2.6rem;
+  }
+
+  .home-tagline {
+    font-size: 0.95rem;
+  }
+
+  .home-actions {
+    flex-wrap: wrap;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    padding: 12px 24px;
+  }
+}
+
+/* ---------- Mobile landscape & small tablets ---------- */
+@media (max-width: 768px) {
+  .home-container {
+    margin: 0 10px;
+    padding: 32px 16px;
+  }
+
+  .home-title {
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+
+  .home-tagline {
+    max-width: 100%;
+  }
+
+  .focus-today {
+    font-size: 0.75rem;
+    padding: 10px 16px;
+  }
+
+  .home-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .card {
+    padding: 22px;
+  }
+
+  .image-placeholder {
+    height: 220px;
+  }
+}
+
+/* ---------- Mobile portrait ---------- */
+@media (max-width: 480px) {
+  .home-title {
+    font-size: 1.9rem;
+  }
+
+  .home-tagline {
+    font-size: 0.9rem;
+  }
+
+  .notification-item {
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+
+  .about-card p {
+    font-size: 0.95rem;
+  }
+
+  .image-placeholder {
+    height: 200px;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-title {
+    font-size: 1.7rem;
+  }
+
+  .focus-today {
+    font-size: 0.7rem;
+    padding: 8px 14px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    padding: 11px 16px;
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}
