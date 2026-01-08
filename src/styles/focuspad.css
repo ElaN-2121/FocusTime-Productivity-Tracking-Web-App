@@ -264,3 +264,154 @@ body[data-theme="dark"] .focuspad-root {
   font-size: 15px;
   line-height: 1.6;
 }
+
+/*  RESPONSIVE ADD-ONS
+
+/* ---------- Large tablets & small laptops ---------- */
+@media (max-width: 1200px) {
+  .fp-canvas {
+    padding: 50px 6%;
+  }
+
+  .fp-title-input {
+    font-size: 36px;
+  }
+}
+
+/* ---------- Tablets ---------- */
+@media (max-width: 992px) {
+  .focuspad-root {
+    flex-direction: row;
+  }
+
+  .fp-sidebar {
+    width: 240px;
+    margin-left: 0;
+  }
+
+  .fp-editor-nav {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .fp-toolbar-group {
+    flex-wrap: wrap;
+  }
+
+  .fp-canvas {
+    padding: 40px 5%;
+  }
+
+  .fp-title-input {
+    font-size: 32px;
+  }
+
+  .fp-content-editable {
+    font-size: 17px;
+  }
+}
+
+/* ---------- Mobile landscape & small tablets ---------- */
+@media (max-width: 768px) {
+  .focuspad-root {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .fp-sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--fp-border);
+  }
+
+  .fp-note-item {
+    padding: 12px 16px;
+  }
+
+  .fp-editor {
+    width: 100%;
+  }
+
+  .fp-editor-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fp-toolbar-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .fp-btn-save,
+  .fp-btn-ai {
+    width: 100%;
+    text-align: center;
+  }
+
+  .fp-canvas {
+    padding: 30px 16px;
+    max-width: 100%;
+  }
+
+  .fp-title-input {
+    font-size: 28px;
+  }
+
+  .fp-content-editable {
+    font-size: 16px;
+  }
+}
+
+/* ---------- Mobile portrait ---------- */
+@media (max-width: 480px) {
+  .fp-search {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .fp-btn-new {
+    font-size: 13px;
+    padding: 9px;
+  }
+
+  .fp-note-content strong {
+    font-size: 13px;
+  }
+
+  .fp-note-content p {
+    font-size: 11px;
+  }
+
+  .fp-tool-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .fp-title-input {
+    font-size: 24px;
+  }
+
+  .fp-content-editable {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .ai-summary-block {
+    padding: 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .fp-title-input {
+    font-size: 22px;
+  }
+
+  .fp-btn-save,
+  .fp-btn-ai {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}
