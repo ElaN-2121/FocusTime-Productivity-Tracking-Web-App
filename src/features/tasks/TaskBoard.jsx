@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useTaskBoard } from "../../hooks/useTaskBoard"; 
+import { useTaskBoard } from "../../hooks/useTaskBoard";
 import TaskCard from "./TaskCard";
 
 import "../../styles/global.css";
@@ -54,9 +54,9 @@ export default function TaskBoard() {
 
   const handleToggleComplete = async (taskId, currentStatus) => {
     const isNowCompleted = !currentStatus;
-    await editTask(taskId, { 
+    await editTask(taskId, {
       completed: isNowCompleted,
-      status: isNowCompleted ? "Done" : "To-Do" 
+      status: isNowCompleted ? "Done" : "To-Do",
     });
   };
 
@@ -110,7 +110,15 @@ export default function TaskBoard() {
   if (loading) {
     return (
       <div className="dashboard-layout">
-        <div className="loading-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div
+          className="loading-container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
           <h2>Loading task board...</h2>
         </div>
       </div>
@@ -121,12 +129,20 @@ export default function TaskBoard() {
     <div className="dashboard-layout">
       {/* Feedback Banner */}
       {(successMsg || uiError || hookError) && (
-        <div className={`fp-banner ${uiError || hookError ? "error" : "success"}`} style={{
-          position: 'fixed', top: '20px', right: '20px', padding: '10px 20px',
-          backgroundColor: (uiError || hookError) ? '#ffdddd' : '#ddffdd',
-          color: (uiError || hookError) ? '#d8000c' : '#4f8a10',
-          borderRadius: '4px', zIndex: 1000, boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-        }}>
+        <div
+          className={`fp-banner ${uiError || hookError ? "error" : "success"}`}
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            padding: "10px 20px",
+            backgroundColor: uiError || hookError ? "#ffdddd" : "#ddffdd",
+            color: uiError || hookError ? "#d8000c" : "#4f8a10",
+            borderRadius: "4px",
+            zIndex: 1000,
+            boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+          }}
+        >
           {uiError || hookError || successMsg}
         </div>
       )}
@@ -173,13 +189,29 @@ export default function TaskBoard() {
                   disabled={isSubmitting}
                 />
               </div>
-              <button className="btn btn-primary" onClick={handleAddTask} disabled={isSubmitting}>
-                {isSubmitting ? "Creating..." : `Create ${newTaskType.charAt(0).toUpperCase() + newTaskType.slice(1)}`}
+              <button
+                className="btn btn-primary"
+                onClick={handleAddTask}
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? "Creating..."
+                  : `Create ${
+                      newTaskType.charAt(0).toUpperCase() + newTaskType.slice(1)
+                    }`}
               </button>
             </div>
 
             {/* Add New Stage Control */}
-            <div className="add-stage-row" style={{ marginTop: '20px', marginBottom: '20px', display: 'flex', gap: '10px' }}>
+            <div
+              className="add-stage-row"
+              style={{
+                marginTop: "20px",
+                marginBottom: "20px",
+                display: "flex",
+                gap: "10px",
+              }}
+            >
               <input
                 className="form-input"
                 placeholder="New Column Name..."
@@ -187,44 +219,65 @@ export default function TaskBoard() {
                 onChange={(e) => setNewStageName(e.target.value)}
                 style={{ maxWidth: "250px" }}
               />
-              <button className="btn btn-primary" onClick={handleAddStage}>+ Add Column</button>
+              <button className="btn btn-primary" onClick={handleAddStage}>
+                + Add Column
+              </button>
             </div>
 
             {/* Kanban Columns (Fixed Size & Dynamic) */}
-            <div className="task-board-container" style={{ 
-              display: 'flex', 
-              gap: '20px', 
-              overflowX: 'auto', 
-              paddingBottom: '20px',
-              alignItems: 'flex-start' 
-            }}>
+            <div
+              className="task-board-container"
+              style={{
+                display: "flex",
+                gap: "20px",
+                overflowX: "auto",
+                paddingBottom: "20px",
+                alignItems: "flex-start",
+              }}
+            >
               {stages.map((stageName) => (
                 <div
                   key={stageName}
                   className="kanban-column"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => handleDrop(e, stageName)}
-                  style={{ 
-                    flex: '0 0 300px', // Standard Column Width
-                    minWidth: '300px',
-                    backgroundColor: '#f8f9fa',
-                    borderRadius: '8px',
-                    padding: '15px'
+                  style={{
+                    flex: "0 0 300px", // Standard Column Width
+                    minWidth: "300px",
+                    borderRadius: "8px",
+                    padding: "15px",
                   }}
                 >
-                  <div className="kanban-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                  <div
+                    className="kanban-header"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                    }}
+                  >
                     <h3 style={{ margin: 0 }}>{stageName}</h3>
                     {!["To-Do", "In Progress", "Done"].includes(stageName) && (
                       <button
-                        onClick={() => window.confirm(`Delete "${stageName}" column?`) && removeStage(stageName)}
+                        onClick={() =>
+                          window.confirm(`Delete "${stageName}" column?`) &&
+                          removeStage(stageName)
+                        }
                         className="delete-column-btn"
-                        style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer', fontSize: '1.2rem' }}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "red",
+                          cursor: "pointer",
+                          fontSize: "1.2rem",
+                        }}
                       >
                         &times;
                       </button>
                     )}
                   </div>
-                  <div className="task-list" style={{ minHeight: '100px' }}>
+                  <div className="task-list" style={{ minHeight: "100px" }}>
                     {mainTasks
                       .filter((task) => task.status === stageName)
                       .map((task) => (
@@ -237,7 +290,9 @@ export default function TaskBoard() {
                           onStatusChange={updateTaskStatus}
                           isSaving={!!saving?.[task.id]}
                           stages={stages}
-                          onToggleComplete={() => handleToggleComplete(task.id, task.completed)}
+                          onToggleComplete={() =>
+                            handleToggleComplete(task.id, task.completed)
+                          }
                         />
                       ))}
                   </div>
@@ -253,7 +308,16 @@ export default function TaskBoard() {
             <h3>📘 Assignments</h3>
             <div className="side-list">
               {assignmentTasks.map((t) => (
-                <TaskCard key={t.id} task={t} onEdit={setEditingTask} onDelete={deleteTask} onMove={moveTask} onStatusChange={updateTaskStatus} isSaving={!!saving?.[t.id]} stages={stages} />
+                <TaskCard
+                  key={t.id}
+                  task={t}
+                  onEdit={setEditingTask}
+                  onDelete={deleteTask}
+                  onMove={moveTask}
+                  onStatusChange={updateTaskStatus}
+                  isSaving={!!saving?.[t.id]}
+                  stages={stages}
+                />
               ))}
             </div>
           </div>
@@ -261,7 +325,16 @@ export default function TaskBoard() {
             <h3>📝 Upcoming Exams</h3>
             <div className="side-list">
               {examTasks.map((t) => (
-                <TaskCard key={t.id} task={t} onEdit={setEditingTask} onDelete={deleteTask} onMove={moveTask} onStatusChange={updateTaskStatus} isSaving={!!saving?.[t.id]} stages={stages} />
+                <TaskCard
+                  key={t.id}
+                  task={t}
+                  onEdit={setEditingTask}
+                  onDelete={deleteTask}
+                  onMove={moveTask}
+                  onStatusChange={updateTaskStatus}
+                  isSaving={!!saving?.[t.id]}
+                  stages={stages}
+                />
               ))}
             </div>
           </div>
@@ -273,12 +346,35 @@ export default function TaskBoard() {
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <h3>Edit Task</h3>
               <form onSubmit={handleSaveEdit}>
-                <input name="title" className="form-input" defaultValue={editingTask.title} required />
-                <input name="dueDate" type="date" className="form-input" defaultValue={editingTask.dueDate} />
-                <textarea name="description" className="form-input" defaultValue={editingTask.description} rows="4" />
+                <input
+                  name="title"
+                  className="form-input"
+                  defaultValue={editingTask.title}
+                  required
+                />
+                <input
+                  name="dueDate"
+                  type="date"
+                  className="form-input"
+                  defaultValue={editingTask.dueDate}
+                />
+                <textarea
+                  name="description"
+                  className="form-input"
+                  defaultValue={editingTask.description}
+                  rows="4"
+                />
                 <div className="modal-actions">
-                  <button type="button" className="btn" onClick={() => setEditingTask(null)}>Cancel</button>
-                  <button type="submit" className="btn btn-primary">Save Changes</button>
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => setEditingTask(null)}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Save Changes
+                  </button>
                 </div>
               </form>
             </div>

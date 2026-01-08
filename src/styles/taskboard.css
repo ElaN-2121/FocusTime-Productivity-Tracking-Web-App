@@ -25,20 +25,33 @@
   gap: 12px;
 }
 
-
 .task-board-container {
   display: flex;
   gap: 20px;
   margin-top: 24px;
   padding: 24px;
-  background-color: #e2eeff; 
+  background-color: #e2eeff;
   border-radius: var(--radius);
   overflow-x: auto;
 }
 
-
 body[data-theme="dark"] .task-board-container {
   background-color: rgba(108, 99, 255, 0.05);
+}
+body[data-theme="dark"] .task-form-container input,
+body[data-theme="dark"] .task-form-container textarea,
+body[data-theme="dark"] .task-form-container select {
+  background-color: #0f172a;
+  color: #f0f0f0;
+  border: 1px solid #334155;
+}
+body[data-theme="dark"] .add-stage-row input {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+}
+body[data-theme="dark"] .kanban-column {
+  background: #1e293b;
+  color: #f0f0f0;
 }
 
 .kanban-column {
@@ -88,7 +101,7 @@ body[data-theme="dark"] .task-board-container {
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
   transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
 }
 
@@ -146,9 +159,18 @@ body[data-theme="dark"] .task-board-container {
   font-weight: 700;
 }
 
-.task-badge.task { background: #e0f2fe; color: #0284c7; }
-.task-badge.assignment { background: #fef9c3; color: #ca8a04; }
-.task-badge.exam { background: #fee2e2; color: #dc2626; }
+.task-badge.task {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+.task-badge.assignment {
+  background: #fef9c3;
+  color: #ca8a04;
+}
+.task-badge.exam {
+  background: #fee2e2;
+  color: #dc2626;
+}
 
 .task-actions {
   display: flex;
@@ -170,11 +192,20 @@ body[data-theme="dark"] .task-board-container {
   border-radius: 4px;
 }
 
-.action-btn.edit { color: var(--text-muted); }
-.action-btn.edit:hover { background: #f3f4f6; color: var(--primary); }
+.action-btn.edit {
+  color: var(--text-muted);
+}
+.action-btn.edit:hover {
+  background: #f3f4f6;
+  color: var(--primary);
+}
 
-.action-btn.delete { color: #ef4444; }
-.action-btn.delete:hover { background: #fee2e2; }
+.action-btn.delete {
+  color: #ef4444;
+}
+.action-btn.delete:hover {
+  background: #fee2e2;
+}
 
 /* Completed State */
 .task-card.completed {

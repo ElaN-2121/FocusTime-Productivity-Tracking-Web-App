@@ -12,7 +12,6 @@
   transition: background 0.5s ease;
 }
 
-
 .pomodoro-container.focus-mode-active {
   background: radial-gradient(
     circle at center,
@@ -28,7 +27,6 @@
   margin: 0;
   letter-spacing: -1px;
 }
-
 
 .flip-clock {
   display: flex;
@@ -57,7 +55,6 @@
   color: var(--primary);
   line-height: 1;
 }
-
 
 .controls {
   display: flex;
@@ -91,7 +88,7 @@
 .control-btn.start {
   background: var(--primary);
   color: white;
-  width: 72px; 
+  width: 72px;
   height: 72px;
 }
 
