@@ -41,8 +41,20 @@ export const useProgressAnalytics = () => {
   };
 
   const calculateWeeklyData = (sessions) => {
-    const days = ["M", "T", "W", "T", "F", "S", "S"];
-    const weekly = days.map(d => ({ day: d, value: 0 }));
+    const days = [
+    { key: "mon", label: "Mon" },
+    { key: "tue", label: "Tue" },
+    { key: "wed", label: "Wed" },
+    { key: "thu", label: "Thu" },
+    { key: "fri", label: "Fri" },
+    { key: "sat", label: "Sat" },
+    { key: "sun", label: "Sun" },
+    ];
+    const weekly = days.map(d => ({
+    dayKey: d.key,
+    day: d.label,
+    value: 0,
+  }));
     const now = new Date();
     const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate() - ((now.getDay() + 6) % 7));
